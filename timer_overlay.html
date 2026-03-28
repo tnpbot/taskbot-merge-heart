@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- tnp 10/2025 - Testing separate timer overlay - Will need to remove timer from tasklist -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Overlay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .timer-overlay {
+            width: 300px;
+            padding: 20px;
+            background: rgba(45, 45, 55, 0.95);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .control-btn.active {
+            background: rgba(136, 156, 206, 0.4);
+            border-color: rgba(136, 156, 206, 0.8);
+            box-shadow: 0 0 15px rgba(136, 156, 206, 0.6);
+        }
+
+        .control-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+        }
+
+        .cycle-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            min-height: 12px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: rgba(136, 156, 206, 0.9);
+            box-shadow: 0 0 10px rgba(136, 156, 206, 0.8);
+        }
+
+        .dot.completed {
+            background: rgba(100, 200, 100, 0.7);
+        }
+
+        .timer-phase {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-overlay">
+        <div class="timer-phase" id="timerPhase">Ready</div>
+        <div class="timer-display" id="timerDisplay">00:00</div>
+        
+        <div class="controls">
+            <button class="control-btn" id="playBtn" title="Start">
+                <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="pauseBtn" title="Pause">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="cycle-dots" id="cycleDots"></div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="breakStartAudio" src="./media/breakTime.mp3"></audio>
+    <audio id="breakEndAudio" src="./media/breakEnd.mp3"></audio>
+
+    <script>
+        // Timer state
+        let timerInterval = null;
+        let isRunning = false;
+        let isPaused = false;
+        let currentTime = 0;
+        let focusDuration = 25 * 60; // 25 minutes default
+        let breakDuration = 5 * 60; // 5 minutes default
+        let totalCycles = 1;
+        let currentCycle = 1;
+        let isInFocus = true;
+
+        // DOM elements
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerPhase = document.getElementById('timerPhase');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const cycleDots = document.getElementById('cycleDots');
+        const breakStartAudio = document.getElementById('breakStartAudio');
+        const breakEndAudio = document.getElementById('breakEndAudio');
+
+        // Update display
+        function updateDisplay() {
+            const minutes = Math.floor(currentTime / 60).toString().padStart(2, '0');
+            const seconds = (currentTime % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        // Update phase text
+        function updatePhase() {
+            if (totalCycles > 1) {
+                timerPhase.textContent = `${isInFocus ? 'Focus' : 'Break'} ${currentCycle}/${totalCycles}`;
+            } else {
+                timerPhase.textContent = isInFocus ? 'Focus' : 'Break';
+            }
+        }
+
+        // Create cycle dots
+        function createCycleDots() {
+            cycleDots.innerHTML = '';
+            for (let i = 1; i <= totalCycles; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (i < currentCycle) {
+                    dot.classList.add('completed');
+                } else if (i === currentCycle) {
+                    dot.classList.add('active');
+                }
+                cycleDots.appendChild(dot);
+            }
+        }
+
+        // Update button states
+        function updateButtonStates() {
+            if (isRunning && !isPaused) {
+                playBtn.classList.remove('active');
+                pauseBtn.classList.add('active');
+            } else {
+                playBtn.classList.add('active');
+                pauseBtn.classList.remove('active');
+            }
+        }
+
+        // Timer tick
+        function tick() {
+            if (currentTime > 0) {
+                currentTime--;
+                updateDisplay();
+            } else {
+                // Timer reached zero
+                if (isInFocus) {
+                    // Focus session ended, start break
+                    breakStartAudio.play();
+                    isInFocus = false;
+                    currentTime = breakDuration;
+                    updatePhase();
+                    updateDisplay();
+                } else {
+                    // Break ended
+                    breakEndAudio.play();
+                    
+                    if (currentCycle < totalCycles) {
+                        // Start next cycle
+                        currentCycle++;
+                        isInFocus = true;
+                        currentTime = focusDuration;
+                        updatePhase();
+                        createCycleDots();
+                        updateDisplay();
+                    } else {
+                        // All cycles complete - mark last dot as completed
+                        createCycleDots();
+                        stopTimer();
+                        timerPhase.textContent = 'Complete!';
+                    }
+                }
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            if (!isRunning || isPaused) {
+                isRunning = true;
+                isPaused = false;
+                if (currentTime === 0) {
+                    currentTime = focusDuration;
+                }
+                timerInterval = setInterval(tick, 1000);
+                updateButtonStates();
+            }
+        }
+
+        // Pause timer
+        function pauseTimer() {
+            if (isRunning && !isPaused) {
+                isPaused = true;
+                clearInterval(timerInterval);
+                updateButtonStates();
+            }
+        }
+
+        // Stop timer
+        function stopTimer() {
+            isRunning = false;
+            isPaused = false;
+            clearInterval(timerInterval);
+            updateButtonStates();
+        }
+
+        // Reset timer to initial state
+        function resetTimer(focus = 40, breakTime = 10, cycles = 5) {
+            stopTimer();
+            focusDuration = focus * 60;
+            breakDuration = breakTime * 60;
+            totalCycles = cycles;
+            currentCycle = 1;
+            isInFocus = true;
+            currentTime = focusDuration;
+            updateDisplay();
+            updatePhase();
+            createCycleDots();
+            updateButtonStates();
+        }
+
+        // Parse timer command from chat
+        function parseTimerCommand(message) {
+            // Format: !timer 40/10/5 (focus/break/cycles)
+            const match = message.match(/(\d+)\/(\d+)\/(\d+)/);
+            if (match) {
+                const focus = parseInt(match[1]);
+                const breakTime = parseInt(match[2]);
+                const cycles = parseInt(match[3]);
+                resetTimer(focus, breakTime, cycles);
+                startTimer();
+            }
+        }
+
+        // Listen for timer commands via localStorage
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'timerCommand') {
+                const command = JSON.parse(e.newValue);
+                if (command.action === 'start') {
+                    parseTimerCommand(command.message);
+                } else if (command.action === 'reset') {
+                    resetTimer();
+                }
+            }
+        });
+
+        // Button event listeners
+        playBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+
+        // Initialize
+        resetTimer();
+    </script>
+</body>
+</html>

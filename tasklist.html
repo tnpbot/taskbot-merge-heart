@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta author="jujoco" />
+		<meta
+			name="keywords"
+			content="twitch, chat, taskList, jujoco"
+		/>
+		<meta name="description" content="A Task list for twitch chat" />
+		<link
+			rel="icon"
+			type="image/png"
+			href="https://github.githubassets.com/favicons/favicon-dark.png"
+		/>
+		<link rel="stylesheet" type="text/css" href="./styles/index.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+		<script defer src="./_auth.js"></script>
+		<script defer src="./_configAdmin.js"></script>
+		<script defer src="./_configUser.js"></script>
+		<script defer src="./_settings.js"></script>
+		<script defer src="./_styles.js"></script>
+		<script defer src="./dist/taskBot.iife.js"></script>
+		<title>Multi Task List</title>
+	</head>
+
+	<body>
+		<main id="app">
+			<div class="header">
+				<div class="header-features">
+					<div class="timer hidden">
+						<span
+							class="timer-title"
+							>Break</span
+						>
+						<span
+							class="timer-countdown"
+							>00:00</span
+						>
+					</div>
+
+					<div class="command-tips hidden">
+						<spans
+							class="command-code"
+							>!help</spans
+						>
+					</div>
+
+					<div class="custom-header hidden">
+						<span class="custom-text">Custom Header Text</span>
+					</div>
+
+					<div class="task-title">
+						<span class="task-title">tasks</span>
+						<span class="task-count">0/0</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="task-wrapper">
+				<div class="task-container primary"></div>
+				<div class="task-container secondary"></div>
+			</div>
+			
+			<!-- Updated: Two separate audio files for break start and break end -->
+			<audio id="breakStartAudio" src="./media/breakTime.mp3"></audio>
+			<audio id="breakEndAudio" src="./media/breakEnd.mp3"></audio>
+		</main>
+
+		<div id="modal"	class="modal hidden justify-center items-center absolute">
+			<div class="modal-content">
+				<h2 class="modal-header">Invalid oAuth access token</h2>
+				<div class="modal-body">
+					<p>Possible Reasons:</p>
+					<ul class="modal-list">
+						<li>Token entered incorrectly.</li>
+						<li>Token could have expired. Generate a new access token.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- Firebase SDK -->
+		<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+		
+		<!-- Firebase Sync Script -->
+		<script defer src="./firebase-sync.js"></script>
+	</body>
+</html>
