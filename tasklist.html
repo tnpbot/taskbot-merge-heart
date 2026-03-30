@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta author="jujoco" />
+		<meta
+			name="keywords"
+			content="twitch, chat, taskList, jujoco"
+		/>
+		<meta name="description" content="A Task list for twitch chat" />
+		<link
+			rel="icon"
+			type="image/png"
+			href="https://github.githubassets.com/favicons/favicon-dark.png"
+		/>
+		<link rel="stylesheet" type="text/css" href="./styles/index.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+		<script defer src="./_auth.js"></script>
+		<script defer src="./_configAdmin.js"></script>
+		<script defer src="./_configUser.js"></script>
+		<script defer src="./_settings.js"></script>
+		<script defer src="./_styles.js"></script>
+		<script defer src="./dist/taskBot.iife.js"></script>
+		<title>Multi Task List</title>
+	</head>
+
+	<body>
+		<main id="app">
+			<div class="header">
+				<!-- left: title (idle) or timer (when running) -->
+				<div class="header-left">
+					<span class="header-title"></span>
+					<div class="timer hidden">
+						<span class="timer-title">Focus</span>
+						<span class="timer-sep">—</span>
+						<span class="timer-countdown">00:00</span>
+					</div>
+				</div>
+				<!-- right: always-on clock + done pill -->
+				<div class="header-right">
+					<span class="clock-time"></span>
+					<span class="task-count-pill"><span class="task-count-done">0</span><span class="task-count-sep">✓</span></span>
+				</div>
+			</div>
+
+			<!-- command hints strip -->
+			<div class="hints">
+				<div class="hint-item">
+					<span class="hint-cmd">!task</span>
+					<span class="hint-desc">add a task</span>
+				</div>
+				<div class="hint-item">
+					<span class="hint-cmd">!done</span>
+					<span class="hint-desc">mark complete</span>
+				</div>
+				<div class="hint-item">
+					<span class="hint-cmd">!doneall</span>
+					<span class="hint-desc">finish all</span>
+				</div>
+				<div class="hint-item">
+					<span class="hint-cmd">!delete</span>
+					<span class="hint-desc">delete a task</span>
+				</div>
+				<div class="hint-item">
+					<span class="hint-cmd">!currenttask</span>
+					<span class="hint-desc">spotlight it</span>
+				</div>
+				<div class="hint-item">
+					<span class="hint-cmd">!edit</span>
+					<span class="hint-desc">edit a task</span>
+				</div>
+			</div>
+
+			<div class="task-wrapper">
+				<div class="task-container primary"></div>
+				<div class="task-container secondary"></div>
+			</div>
+			
+			<!-- session roster shelf -->
+			<div class="shelf">
+				<div class="shelf-label">👥 this session</div>
+				<div class="shelf-tags" id="shelf-tags"></div>
+			</div>
+
+			<!-- Updated: Two separate audio files for break start and break end -->
+			<audio id="breakStartAudio" src="./media/breakTime.mp3"></audio>
+			<audio id="breakEndAudio" src="./media/breakEnd.mp3"></audio>
+		</main>
+
+		<!-- confetti/celebration layer -->
+	<div id="cel"></div>
+
+	<!-- current task spotlight overlay -->
+	<div id="ct-overlay"></div>
+
+	<div id="modal"	class="modal hidden justify-center items-center absolute">
+			<div class="modal-content">
+				<h2 class="modal-header">Invalid oAuth access token</h2>
+				<div class="modal-body">
+					<p>Possible Reasons:</p>
+					<ul class="modal-list">
+						<li>Token entered incorrectly.</li>
+						<li>Token could have expired. Generate a new access token.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- Firebase SDK -->
+		<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+		
+		<!-- Firebase Sync Script -->
+		<script defer src="./firebase-sync.js"></script>
+
+		<!-- OBS Interact Settings Panel (Step 9) -->
+		<script defer src="./settings-panel.js"></script>
+	</body>
+</html>
