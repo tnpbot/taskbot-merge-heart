@@ -12,36 +12,56 @@
     background: #111113;
     color: #e4e2de;
     line-height: 1.7;
-    padding: 48px 24px 80px;
   }
 
   .wrap {
-    max-width: 640px;
+    max-width: 840px;
     margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #9db4cc;
+    color: #e4e2de;
     text-decoration: none;
-    font-size: 14px;
-    margin-bottom: 36px;
-    opacity: 0.8;
+    font-size: 16px;
+    opacity: 0.7;
   }
   .back-link:hover { opacity: 1; }
 
+  #btn-theme-toggle {
+    font-family: inherit;
+    cursor: pointer;
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: #e4e2de;
+    font-size: 18px;
+    padding: 5px 10px;
+    line-height: 1;
+    transition: opacity .15s;
+  }
+  #btn-theme-toggle:hover { opacity: 0.8; }
+
   h1 {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
     margin-bottom: 8px;
     color: #e4e2de;
   }
 
   .subtitle {
-    font-size: 15px;
-    color: rgba(228,226,222,0.5);
+    font-size: 17px;
+    color: rgba(228,226,222,0.6);
     margin-bottom: 40px;
   }
 
@@ -75,27 +95,27 @@
 
   .step-num {
     flex-shrink: 0;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background: rgba(157,180,204,0.15);
+    background: rgba(157,180,204,0.12);
     border: 1.5px solid rgba(157,180,204,0.3);
     color: #9db4cc;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 2px;
+    margin-top: 3px;
   }
 
   .step-body { flex: 1; }
-  .step-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
-  .step-desc  { font-size: 14px; color: rgba(228,226,222,0.65); }
+  .step-title { font-weight: 600; font-size: 17px; margin-bottom: 4px; color: #e4e2de; }
+  .step-desc  { font-size: 16px; color: rgba(228,226,222,0.55); }
 
   code {
     font-family: "Consolas", "Menlo", monospace;
-    font-size: 13px;
+    font-size: 14px;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 5px;
@@ -108,9 +128,9 @@
     background: rgba(184,204,176,0.08);
     border: 1px solid rgba(184,204,176,0.2);
     border-radius: 10px;
-    padding: 16px 20px;
-    font-size: 14px;
-    color: rgba(228,226,222,0.75);
+    padding: 18px 22px;
+    font-size: 16px;
+    color: rgba(228,226,222,0.8);
   }
   .tip strong { color: #b8ccb0; }
 
@@ -119,8 +139,8 @@
     background: rgba(201,169,110,0.08);
     border: 1px solid rgba(201,169,110,0.2);
     border-radius: 10px;
-    padding: 16px 20px;
-    font-size: 14px;
+    padding: 18px 22px;
+    font-size: 16px;
     color: rgba(228,226,222,0.75);
   }
   .warning strong { color: #c9a96e; }
@@ -130,18 +150,46 @@
     border-top: 1px solid rgba(255,255,255,0.07);
     margin: 40px 0;
   }
+
+  .steps-intro {
+    font-size: 16px;
+    color: rgba(228,226,222,0.55);
+    margin-bottom: 16px;
+  }
+
+  /* ── light mode ── */
+  body.light { background: #f0eeea; color: #1a1a1e; }
+  body.light .back-link { color: #1a1a1e; }
+  body.light #btn-theme-toggle { border-color: rgba(0,0,0,0.2); color: #1a1a1e; }
+  body.light h1 { color: #1a1a1e; }
+  body.light .subtitle { color: rgba(26,26,30,0.6); }
+  body.light h2 { color: rgba(18,47,78,0.85); }
+  body.light .steps li { border-bottom-color: rgba(0,0,0,0.08); }
+  body.light .step-num { background: rgba(157,180,204,0.15); border-color: rgba(157,180,204,0.3); color: #29425d; }
+  body.light .step-title { color: #1a1a1e; }
+  body.light .step-desc { color: rgba(51,51,50,0.65); }
+  body.light code { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #655639; }
+  body.light .tip { color: rgba(72,71,70,1); }
+  body.light .tip strong { color: #3a6529; }
+  body.light .warning { color: rgba(11,11,11,0.75); }
+  body.light .warning strong { color: #c9860b; }
+  body.light .divider { border-top-color: rgba(0,0,0,0.1); }
+  body.light .steps-intro { color: rgba(51,51,50,0.65); }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <a class="back-link" href="config.html">← Back to Style Config</a>
+  <div class="page-header">
+    <a class="back-link" href="config.html">← Back to Style Config</a>
+    <button id="btn-theme-toggle" title="Toggle light/dark view">☀️</button>
+  </div>
 
   <h1>Restoring a Backup</h1>
   <p class="subtitle">How to replace a changed <code>_styles.js</code> with your backup file.</p>
 
   <h2>What is a backup?</h2>
-  <p style="font-size:14px;color:rgba(228,226,222,0.65);margin-bottom:20px;">
+  <p class="steps-intro">
     When you click <strong>⬇ Backup</strong> in the Style Config, it downloads a copy of your current
     <code>_styles.js</code> named <code>_styles.backup.js</code>. This is a plain JavaScript file —
     no special tools needed to restore it.
@@ -204,7 +252,7 @@
   <hr class="divider" />
 
   <h2>Keeping backups organized</h2>
-  <p style="font-size:14px;color:rgba(228,226,222,0.65);margin-bottom:16px;">
+  <p class="steps-intro">
     Each backup download is always named <code>_styles.backup.js</code>. If you want to keep
     multiple backups (e.g. before each stream), rename the file after downloading:
   </p>
@@ -241,5 +289,11 @@
   </div>
 
 </div>
+<script>
+document.getElementById("btn-theme-toggle").addEventListener("click", () => {
+  const light = document.body.classList.toggle("light");
+  document.getElementById("btn-theme-toggle").textContent = light ? "🌙" : "☀️";
+});
+</script>
 </body>
 </html>

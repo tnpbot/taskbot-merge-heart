@@ -31,7 +31,7 @@ const _userConfig = {
       check: 'Your current task(s) are: {message}',
       help: "Try these commands - !task !edit # !done # !delete !check !clearmydone",
       additional:
-        "Jujoco is the creator of this bot, check out his Twitch at: https://www.twitch.tv/Jujoco_Dev with updates by teamnopants and Claude.ai",
+        "Jujoco is the creator of the base code of this bot, check out his Twitch at: https://www.twitch.tv/Jujoco_Dev with updates by teamnopants, mjheart and Claude.ai",
       maxTasksAdded:
         "Maximum number of tasks reached, try deleting old tasks.",
       noTaskFound: "You don't have active tasks or that task doesn't seem to exist, try adding one!",
