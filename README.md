@@ -431,7 +431,7 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 
 ## Credits
 
-**Author:** [**@Jujoco_Dev**](https://twitch.tv/Jujoco_Dev)
+**Authors:** [**@Jujoco_Dev**](https://twitch.tv/Jujoco_Dev)
 
 [**@teamnopants**](https://twitch.tv/teamnopants)
 
