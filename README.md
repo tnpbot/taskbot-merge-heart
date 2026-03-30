@@ -433,8 +433,10 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 
 **Author:** [**@Jujoco_Dev**](https://twitch.tv/Jujoco_Dev)
 
-[**@teamnopants](https://twitch.tv/teamnopants)
-[**@afroduckling](https://twitch.tv/afroduckling)
-[**@mjheart](https://twitch.tv/mjheart)
+[**@teamnopants**](https://twitch.tv/teamnopants)
+
+[**@afroduckling**](https://twitch.tv/afroduckling)
+
+[**@mjheart**](https://twitch.tv/mjheart)
 
 **Contributors:** [**Thank you to all the OG Contributors!**](https://github.com/jujoco/twitch-multitask-task-list-overlay/graphs/contributors)
