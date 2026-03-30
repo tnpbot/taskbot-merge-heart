@@ -522,8 +522,16 @@ export default class App {
 
 			else if (_userConfig.commands.currentTask.includes(command)) {
 				// CURRENT TASK SPOTLIGHT
-				this.showCurrentTaskFromDOM(username);
-				return { message: null, error: false };
+				const user = this.userList.getUser(username);
+				const activeTasks = user ? user.tasks.filter(t => !t.isComplete()) : [];
+				if (activeTasks.length === 0) {
+					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
+				} else {
+					const task = activeTasks.find(t => t.isFocused()) ?? activeTasks[0];
+					this.showCurrentTaskFromDOM(username);
+					responseDetail = task.description;
+					template = _userConfig.responseTo[this.#languageCode].currentTask;
+				}
 			}
 			else if (_userConfig.commands.myTasks.includes(command)) {
 				// ALL TASKS SPOTLIGHT

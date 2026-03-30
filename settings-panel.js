@@ -31,6 +31,73 @@
 
 	function toPx(raw) { return parseFloat(raw) || 0; }
 
+	// ── themes ────────────────────────────────────────────────────────────
+	const THEMES = [
+		{
+			name: "Night",
+			vars: {
+				"--app-background-color":         "rgba(22,22,24,0.94)",
+				"--header-background-color":      "#1e1e21",
+				"--header-font-color":            "#e4e2de",
+				"--card-background-color":        "rgba(22,22,24,0.94)",
+				"--username-color":               "#9db4cc",
+				"--task-font-color":              "#e4e2de",
+				"--task-done-font-color":         "rgba(228,226,222,0.42)",
+				"--task-focus-background-color":  "rgba(157,180,204,0.45)",
+				"--task-focus-font-color":        "#e4e2de",
+			},
+		},
+		{
+			name: "Espresso",
+			vars: {
+				"--app-background-color":         "rgba(26,24,18,0.96)",
+				"--header-background-color":      "#2a2218",
+				"--header-font-color":            "#e8e2d8",
+				"--card-background-color":        "rgba(32,26,20,0.95)",
+				"--username-color":               "#c9a96e",
+				"--task-font-color":              "#e8e2d8",
+				"--task-done-font-color":         "rgba(232,226,216,0.38)",
+				"--task-focus-background-color":  "rgba(201,169,110,0.45)",
+				"--task-focus-font-color":        "#e8e2d8",
+			},
+		},
+		{
+			name: "Forest",
+			vars: {
+				"--app-background-color":         "rgba(18,22,16,0.96)",
+				"--header-background-color":      "#1a2218",
+				"--header-font-color":            "#dde8d8",
+				"--card-background-color":        "rgba(20,26,18,0.95)",
+				"--username-color":               "#b8ccb0",
+				"--task-font-color":              "#dde8d8",
+				"--task-done-font-color":         "rgba(221,232,216,0.38)",
+				"--task-focus-background-color":  "rgba(184,204,176,0.45)",
+				"--task-focus-font-color":        "#dde8d8",
+			},
+		},
+		{
+			name: "Slate",
+			vars: {
+				"--app-background-color":         "rgba(18,20,32,0.96)",
+				"--header-background-color":      "#1a1c2e",
+				"--header-font-color":            "#e2e4f0",
+				"--card-background-color":        "rgba(22,24,40,0.95)",
+				"--username-color":               "#a0a8e0",
+				"--task-font-color":              "#e2e4f0",
+				"--task-done-font-color":         "rgba(226,228,240,0.38)",
+				"--task-focus-background-color":  "rgba(160,168,224,0.45)",
+				"--task-focus-font-color":        "#e2e4f0",
+			},
+		},
+	];
+
+	function applyTheme(theme, panel) {
+		for (const [cssVar, val] of Object.entries(theme.vars)) {
+			setVar(cssVar, val);
+		}
+		syncInputs(panel);
+	}
+
 	// ── field definitions ─────────────────────────────────────────────────
 	const FIELDS = [
 		{ group: "App",      label: "Background",         var: "--app-background-color",           type: "color" },
@@ -73,6 +140,25 @@
 		closeBtn.addEventListener("click", () => closePanel(panel));
 		hdr.append(title, closeBtn);
 		panel.appendChild(hdr);
+
+		// Theme presets bar
+		const themeBar = document.createElement("div");
+		themeBar.id = "sp-themes";
+		THEMES.forEach(theme => {
+			const btn = document.createElement("button");
+			btn.className = "sp-theme-btn";
+			btn.textContent = theme.name;
+			btn.style.background = theme.vars["--header-background-color"];
+			btn.style.color = theme.vars["--header-font-color"];
+			btn.style.borderColor = theme.vars["--username-color"];
+			btn.addEventListener("click", () => {
+				applyTheme(theme, panel);
+				panel.querySelectorAll(".sp-theme-btn").forEach(b => b.classList.remove("active"));
+				btn.classList.add("active");
+			});
+			themeBar.appendChild(btn);
+		});
+		panel.appendChild(themeBar);
 
 		// Fields
 		let currentGroup = null;

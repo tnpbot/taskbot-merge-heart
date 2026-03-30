@@ -38,6 +38,7 @@ const _userConfig = {
       invalidCommand: "Invalid command: {message}. Try !help",
       clearUserDone: "Cleared all your completed tasks!", // NEW: Add this line
       doneAll: "Nice work! Marked all {message} tasks as done!",
+      currentTask: "@{user} - your current task is: {message}",
     },
     ES: {
       addTask: 'Tarea(s) {message} añadida(s)!',

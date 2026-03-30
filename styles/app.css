@@ -455,7 +455,7 @@
 
 /* wrap all scrollable content */
 #sp-panel { overflow-y: auto; }
-#sp-header, #sp-footer { overflow-y: visible; flex-shrink: 0; }
+#sp-header, #sp-themes, #sp-footer { overflow-y: visible; flex-shrink: 0; }
 
 .sp-group {
 	font-size: 11px;
@@ -526,6 +526,29 @@
 	min-width: 22px;
 	text-align: right;
 }
+
+#sp-themes {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+	padding: 14px 18px;
+	border-bottom: 1px solid rgba(130, 136, 224, 0.2);
+	flex-shrink: 0;
+}
+
+.sp-theme-btn {
+	padding: 8px 6px;
+	border-radius: 10px;
+	border: 1.5px solid;
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: opacity .15s, transform .1s;
+	letter-spacing: 0.03em;
+}
+.sp-theme-btn:hover { opacity: 0.85; transform: scale(1.03); }
+.sp-theme-btn.active { outline: 2px solid #fff; outline-offset: 2px; }
 
 #sp-footer {
 	padding: 12px 18px 16px;

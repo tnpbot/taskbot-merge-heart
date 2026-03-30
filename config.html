@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taskbot Style Config</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #111113;
+    color: #e4e2de;
+    padding-top: 62px; /* topbar height */
+  }
+
+  /* ── top bar ── */
+  #topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: #1a1a1e;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  #topbar h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.04em; }
+  #topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    transition: opacity .15s;
+  }
+  button:hover { opacity: 0.85; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  #btn-theme-toggle { background: none; border: 1.5px solid rgba(255,255,255,0.15); color: #e4e2de; padding: 6px 10px; font-size: 16px; line-height: 1; }
+  #btn-open   { background: rgba(157,180,204,0.15); color: #9db4cc; border: 1.5px solid rgba(157,180,204,0.35); }
+  #btn-reopen { background: rgba(201,169,110,0.15); color: #c9a96e; border: 1.5px solid rgba(201,169,110,0.35); }
+  #btn-backup { background: rgba(184,204,176,0.15); color: #b8ccb0; border: 1.5px solid rgba(184,204,176,0.35); display: none; }
+  #btn-save   { background: #9db4cc; color: #111; }
+  #btn-save.unsaved { background: #c9a96e; color: #111; }
+
+  /* ── backup banner ── */
+  #backup-banner {
+    display: none;
+    position: fixed;
+    top: 62px; left: 0; right: 0;
+    z-index: 90;
+    background: rgba(184,204,176,0.12);
+    border-bottom: 1px solid rgba(184,204,176,0.25);
+    padding: 10px 28px;
+    font-size: 13px;
+    color: #b8ccb0;
+    align-items: center;
+    gap: 12px;
+  }
+  #backup-banner a { color: #9db4cc; text-decoration: underline; text-underline-offset: 3px; }
+  #backup-banner a:hover { color: #c9a96e; }
+  #backup-banner-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(184,204,176,0.5);
+    font-size: 16px;
+    padding: 2px 6px;
+    line-height: 1;
+    border-radius: 4px;
+  }
+  #backup-banner-close:hover { color: #b8ccb0; opacity: 1; }
+  body.banner-open { padding-top: 104px; } /* 62px topbar + 42px banner */
+  body.light #backup-banner { background: rgba(100,140,90,0.08); border-bottom-color: rgba(100,140,90,0.2); color: #4a7040; }
+  body.light #backup-banner a { color: #4a6e8a; }
+  body.light #backup-banner-close { color: rgba(100,140,90,0.4); }
+
+  /* ── light mode ── */
+  body.light { background: #f0eeea; color: #1a1a1e; }
+  body.light #topbar { background: #e4e2de; border-bottom-color: rgba(0,0,0,0.1); }
+  body.light #btn-theme-toggle { border-color: rgba(0,0,0,0.2); color: #1a1a1e; }
+  body.light #btn-open   { background: rgba(100,130,160,0.12); color: #4a6e8a; border-color: rgba(100,130,160,0.35); }
+  body.light #btn-reopen { background: rgba(160,120,60,0.1);  color: #8a6a20; border-color: rgba(160,120,60,0.3); }
+  body.light #btn-backup { background: rgba(100,140,90,0.1);  color: #4a7040; border-color: rgba(100,140,90,0.3); }
+  body.light #status { color: rgba(26,26,30,0.45); }
+  body.light #controls { background: #f0eeea; border-right-color: rgba(0,0,0,0.08); }
+  body.light .no-file { color: rgba(26,26,30,0.45); }
+  body.light .field-group h2,
+  body.light #theme-section h2 { color: rgba(74,110,138,0.8); }
+  body.light .field-label { color: rgba(26,26,30,0.7); }
+  body.light .field-row { border-bottom-color: rgba(0,0,0,0.06); }
+  body.light .color-text,
+  body.light .sp-select { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); color: #1a1a1e; }
+  body.light .px-num { color: rgba(26,26,30,0.5); }
+  body.light #preview-label { color: rgba(26,26,30,0.35); border-bottom-color: rgba(0,0,0,0.08); }
+  body.light #preview-frame-wrap { background: repeating-conic-gradient(#e4e2de 0% 25%, #dbd9d4 0% 50%) 0 0 / 24px 24px; }
+
+  #status {
+    font-size: 13px;
+    color: rgba(228,226,222,0.45);
+    min-width: 160px;
+    text-align: right;
+  }
+
+  /* ── main layout ── */
+  #main {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* ── controls pane ── */
+  #controls {
+    width: 380px;
+    flex-shrink: 0;
+    padding: 24px 24px 40px;
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .no-file {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(228,226,222,0.4);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .no-file span { font-size: 36px; display: block; margin-bottom: 12px; }
+
+  /* themes */
+  #theme-section { margin-bottom: 28px; }
+  #theme-section h2 { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: rgba(157,180,204,0.7); margin-bottom: 10px; }
+  #theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .theme-btn {
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: transform .1s, opacity .15s;
+    font-family: inherit;
+  }
+  .theme-btn:hover { transform: scale(1.03); }
+  .theme-btn.active { outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* field groups */
+  .field-group { margin-bottom: 24px; }
+  .field-group h2 { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: rgba(157,180,204,0.7); margin-bottom: 8px; }
+
+  .field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .field-row:last-child { border-bottom: none; }
+  .field-label { font-size: 14px; color: rgba(228,226,222,0.75); flex: 1; }
+
+  /* color field */
+  .color-wrap { display: flex; align-items: center; gap: 8px; }
+  .color-swatch {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.18);
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  /* real color picker sits on top of the swatch, invisible */
+  .color-swatch input[type=color] {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0; cursor: pointer;
+    border: none; padding: 0;
+  }
+  .color-text {
+    width: 130px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: rgba(228,226,222,0.9);
+    font-family: monospace;
+    font-size: 13px;
+    padding: 5px 9px;
+    outline: none;
+  }
+  .color-text:focus { border-color: rgba(157,180,204,0.6); }
+  .color-text.invalid { border-color: #e07070; }
+
+  /* select */
+  .sp-select {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: rgba(228,226,222,0.9);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 5px 8px;
+    outline: none;
+    cursor: pointer;
+    width: 110px;
+  }
+  .sp-select:focus { border-color: rgba(157,180,204,0.6); }
+
+  /* px slider */
+  .px-wrap { display: flex; align-items: center; gap: 8px; }
+  .px-slider { width: 110px; accent-color: #9db4cc; cursor: pointer; }
+  .px-num { font-size: 13px; color: rgba(228,226,222,0.55); min-width: 26px; text-align: right; }
+
+  /* ── preview pane ── */
+  #preview-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 62px; /* below fixed topbar */
+    height: calc(100vh - 62px);
+  }
+
+  #preview-label {
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(228,226,222,0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }
+
+  #preview-frame-wrap {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: auto;
+    padding: 32px;
+    background: repeating-conic-gradient(#1a1a1e 0% 25%, #161618 0% 50%) 0 0 / 24px 24px;
+  }
+
+  .preview-overlay {
+    width: 500px;
+    border-radius: 44px;
+    overflow: hidden;
+    padding: 16px;
+    font-family: "Fredoka", "Segoe UI", sans-serif;
+    flex-shrink: 0;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+    padding: 20px 22px;
+    margin-bottom: 10px;
+  }
+  .preview-header-title { font-size: 22px; font-weight: 700; }
+  .preview-header-right { display: flex; align-items: center; gap: 12px; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .preview-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    border-radius: 999px; padding: 2px 12px;
+    font-size: 16px; font-weight: 700;
+    background: rgba(184,204,176,0.12);
+    border: 1.5px solid rgba(184,204,176,0.28);
+  }
+  .preview-pill-sep { color: #b8ccb0; font-size: 0.8em; }
+
+  .preview-card {
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 8px;
+  }
+  .preview-username { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .preview-task { font-size: 16px; padding: 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .preview-task.done { text-decoration: line-through; font-style: italic; }
+  .preview-task.focus { border-radius: 10px; padding: 3px 8px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>✨ Taskbot Style Config</h1>
+  <div id="topbar-actions">
+    <span id="status">No file open</span>
+    <button id="btn-theme-toggle" title="Toggle light/dark view">☀️</button>
+    <button id="btn-backup" title="Download a backup copy of your current _styles.js">⬇ Backup</button>
+    <button id="btn-open">Open _styles.js</button>
+    <button id="btn-save" disabled>Save</button>
+  </div>
+</div>
+
+<div id="backup-banner">
+  <span>💾 <strong>Back up your file</strong> before making changes — click <strong>⬇ Backup</strong> to download a safe copy.</span>
+  <a href="restore-guide.html" target="_blank">How to restore →</a>
+  <button id="backup-banner-close" title="Dismiss">✕</button>
+</div>
+
+<div id="main">
+  <div id="controls">
+    <div class="no-file" id="no-file-msg">
+      <span>📂</span>
+      Click <strong>Open _styles.js</strong> to begin.<br>
+      Changes apply to the preview instantly<br>and save directly back to your file.
+    </div>
+    <div id="field-ui" style="display:none"></div>
+  </div>
+
+  <div id="preview-pane">
+    <div id="preview-label">Preview</div>
+    <div id="preview-frame-wrap">
+      <div class="preview-overlay" id="preview-overlay">
+        <div class="preview-header" id="preview-header">
+          <span class="preview-header-title" id="preview-title">coworking session</span>
+          <div class="preview-header-right">
+            <span id="preview-clock">3:45 PM</span>
+            <span class="preview-pill"><span id="preview-done">7</span><span class="preview-pill-sep">✓</span></span>
+          </div>
+        </div>
+        <div class="preview-card" id="preview-card1">
+          <div class="preview-username" id="preview-uname1">streamername</div>
+          <div class="preview-task focus" id="preview-task-focus">⭐ current focused task</div>
+          <div class="preview-task" id="preview-task2">another active task</div>
+          <div class="preview-task done" id="preview-task-done">a completed task</div>
+        </div>
+        <div class="preview-card" id="preview-card2">
+          <div class="preview-username" id="preview-uname2">viewer123</div>
+          <div class="preview-task">their task item here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── themes ────────────────────────────────────────────────────────────────
+const THEMES = [
+  {
+    name: "Night",
+    vars: {
+      appBackgroundColor:        "rgba(22,22,24,0.94)",
+      headerBackgroundColor:     "#1e1e21",
+      headerFontColor:           "#e4e2de",
+      cardBackgroundColor:       "rgba(22,22,24,0.94)",
+      usernameColor:             "#9db4cc",
+      taskFontColor:             "#e4e2de",
+      taskDoneFontColor:         "rgba(228,226,222,0.42)",
+      taskFocusBackgroundColor:  "rgba(157,180,204,0.45)",
+      taskFocusFontColor:        "#e4e2de",
+    },
+  },
+  {
+    name: "Espresso",
+    vars: {
+      appBackgroundColor:        "rgba(26,24,18,0.96)",
+      headerBackgroundColor:     "#2a2218",
+      headerFontColor:           "#e8e2d8",
+      cardBackgroundColor:       "rgba(32,26,20,0.95)",
+      usernameColor:             "#c9a96e",
+      taskFontColor:             "#e8e2d8",
+      taskDoneFontColor:         "rgba(232,226,216,0.38)",
+      taskFocusBackgroundColor:  "rgba(201,169,110,0.45)",
+      taskFocusFontColor:        "#e8e2d8",
+    },
+  },
+  {
+    name: "Forest",
+    vars: {
+      appBackgroundColor:        "rgba(18,22,16,0.96)",
+      headerBackgroundColor:     "#1a2218",
+      headerFontColor:           "#dde8d8",
+      cardBackgroundColor:       "rgba(20,26,18,0.95)",
+      usernameColor:             "#b8ccb0",
+      taskFontColor:             "#dde8d8",
+      taskDoneFontColor:         "rgba(221,232,216,0.38)",
+      taskFocusBackgroundColor:  "rgba(184,204,176,0.45)",
+      taskFocusFontColor:        "#dde8d8",
+    },
+  },
+  {
+    name: "Slate",
+    vars: {
+      appBackgroundColor:        "rgba(18,20,32,0.96)",
+      headerBackgroundColor:     "#1a1c2e",
+      headerFontColor:           "#e2e4f0",
+      cardBackgroundColor:       "rgba(22,24,40,0.95)",
+      usernameColor:             "#a0a8e0",
+      taskFontColor:             "#e2e4f0",
+      taskDoneFontColor:         "rgba(226,228,240,0.38)",
+      taskFocusBackgroundColor:  "rgba(160,168,224,0.45)",
+      taskFocusFontColor:        "#e2e4f0",
+    },
+  },
+];
+
+// ── field definitions ─────────────────────────────────────────────────────
+const GOOGLE_FONTS = [
+  // Rounded / display
+  "Fredoka", "Righteous", "Lilita One", "Baloo 2", "Comfortaa",
+  "Paytone One", "Titan One", "Boogaloo", "Nunito", "Varela Round",
+  // Clean / readable
+  "Outfit", "DM Sans", "Jost", "Plus Jakarta Sans", "Inter",
+  "Poppins", "Raleway", "Lato", "Open Sans", "Rubik",
+  // Monospace / code-feel
+  "Courier Prime", "Space Mono", "Share Tech Mono", "Fira Code", "Roboto Mono",
+  "Source Code Pro", "JetBrains Mono", "Inconsolata", "IBM Plex Mono", "Oxanium",
+];
+
+// Track which fonts have already been injected so we don't add duplicate link tags
+const _loadedFonts = new Set();
+
+function loadGoogleFontInPreview(fontName) {
+  if (!fontName || _loadedFonts.has(fontName)) return;
+  _loadedFonts.add(fontName);
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@400;700&display=swap`;
+  document.head.appendChild(link);
+}
+
+const FIELDS = [
+  // Fonts
+  { group: "Fonts",    label: "Header font",        key: "headerFontFamily",             type: "font" },
+  { group: "Fonts",    label: "Card font",          key: "cardFontFamily",               type: "font" },
+  // App
+  { group: "App",      label: "Background color",   key: "appBackgroundColor",           type: "color" },
+  { group: "App",      label: "Border radius (px)", key: "appBorderRadius",              type: "px", min: 0, max: 80 },
+  { group: "App",      label: "Padding (px)",       key: "appPadding",                   type: "px", min: 0, max: 40 },
+  { group: "App",      label: "Background image",   key: "appBackgroundImage",           type: "text", placeholder: "url(../images/file.png)" },
+  // Header
+  { group: "Header",   label: "Show header",        key: "headerDisplay",                type: "select", options: ["flex","none"] },
+  { group: "Header",   label: "Background",         key: "headerBackgroundColor",        type: "color" },
+  { group: "Header",   label: "Font color",         key: "headerFontColor",              type: "color" },
+  { group: "Header",   label: "Font size (px)",     key: "headerFontSize",               type: "px", min: 8,  max: 40 },
+  { group: "Header",   label: "Font weight",        key: "headerFontWeight",             type: "select", options: ["normal","bold","lighter"] },
+  { group: "Header",   label: "Border radius (px)", key: "headerBorderRadius",           type: "px", min: 0, max: 60 },
+  { group: "Header",   label: "Padding (px)",       key: "headerPadding",                type: "px", min: 4, max: 40 },
+  { group: "Header",   label: "Margin bottom (px)", key: "headerMarginBottom",           type: "px", min: 0, max: 30 },
+  // Cards
+  { group: "Cards",    label: "Background",         key: "cardBackgroundColor",          type: "color" },
+  { group: "Cards",    label: "Border radius (px)", key: "cardBorderRadius",             type: "px", min: 0, max: 60 },
+  { group: "Cards",    label: "Gap between (px)",   key: "cardGapBetween",               type: "px", min: 0, max: 30 },
+  { group: "Cards",    label: "Padding (px)",       key: "cardPadding",                  type: "px", min: 4, max: 40 },
+  // Username
+  { group: "Username", label: "Color",              key: "usernameColor",                type: "color" },
+  { group: "Username", label: "Font size (px)",     key: "usernameFontSize",             type: "px", min: 8,  max: 40 },
+  { group: "Username", label: "Font weight",        key: "usernameFontWeight",           type: "select", options: ["normal","bold","lighter"] },
+  // Tasks
+  { group: "Tasks",    label: "Font color",         key: "taskFontColor",                type: "color" },
+  { group: "Tasks",    label: "Font size (px)",     key: "taskFontSize",                 type: "px", min: 8,  max: 36 },
+  { group: "Tasks",    label: "Font weight",        key: "taskFontWeight",               type: "select", options: ["normal","bold","lighter"] },
+  { group: "Tasks",    label: "Done color",         key: "taskDoneFontColor",            type: "color" },
+  { group: "Tasks",    label: "Done style",         key: "taskDoneFontStyle",            type: "select", options: ["italic","normal"] },
+  { group: "Tasks",    label: "Done decoration",    key: "taskDoneTextDecoration",       type: "select", options: ["line-through","none"] },
+  { group: "Tasks",    label: "Focus background",   key: "taskFocusBackgroundColor",     type: "color" },
+  { group: "Tasks",    label: "Focus font color",   key: "taskFocusFontColor",           type: "color" },
+  { group: "Tasks",    label: "Focus radius (px)",  key: "taskFocusBorderRadius",        type: "px", min: 0, max: 40 },
+];
+
+// ── browser capability ────────────────────────────────────────────────────
+const HAS_FSA = typeof window.showOpenFilePicker === "function";
+
+// ── IndexedDB handle persistence (FSA only) ───────────────────────────────
+const _IDB_NAME  = "taskbot-config";
+const _IDB_STORE = "handles";
+const _IDB_KEY   = "stylesHandle";
+
+function _openIDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(_IDB_NAME, 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore(_IDB_STORE);
+    req.onsuccess  = e => resolve(e.target.result);
+    req.onerror    = e => reject(e.target.error);
+  });
+}
+async function _saveHandle(handle) {
+  try { const db = await _openIDB(); db.transaction(_IDB_STORE,"readwrite").objectStore(_IDB_STORE).put(handle,_IDB_KEY); } catch {}
+}
+async function _loadHandle() {
+  try {
+    const db = await _openIDB();
+    return await new Promise((res, rej) => {
+      const req = db.transaction(_IDB_STORE,"readonly").objectStore(_IDB_STORE).get(_IDB_KEY);
+      req.onsuccess = e => res(e.target.result || null);
+      req.onerror   = e => rej(e.target.error);
+    });
+  } catch { return null; }
+}
+async function _clearHandle() {
+  try { const db = await _openIDB(); db.transaction(_IDB_STORE,"readwrite").objectStore(_IDB_STORE).delete(_IDB_KEY); } catch {}
+}
+
+// ── state ─────────────────────────────────────────────────────────────────
+let fileHandle = null;   // FSA only
+let originalSrc = "";    // full file text, kept for buildStylesJs
+let currentValues = {};  // key → value string
+let unsaved = false;
+
+// ── helpers ───────────────────────────────────────────────────────────────
+function isValidColor(str) {
+  const s = new Option().style;
+  s.color = str;
+  return s.color !== "";
+}
+
+function parsePx(str) {
+  return parseFloat(str) || 0;
+}
+
+// Parse _styles.js: extract the object literal values into a flat key→value map.
+function parseStylesJs(src) {
+  const result = {};
+  // Match   key: "value",  or  key: 'value',
+  const re = /(\w+)\s*:\s*["'`]([^"'`]*)["'`]/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    result[m[1]] = m[2];
+  }
+  return result;
+}
+
+// Reconstruct _styles.js source by substituting updated values.
+function buildStylesJs(src, values) {
+  return src.replace(/(\w+)(\s*:\s*)["'`]([^"'`]*)["'`]/g, (match, key, sep, _old) => {
+    if (key in values) {
+      return `${key}${sep}"${values[key]}"`;
+    }
+    return match;
+  });
+}
+
+// ── file I/O ──────────────────────────────────────────────────────────────
+function onFileLoaded(src, name) {
+  originalSrc = src;
+  currentValues = parseStylesJs(src);
+  buildUI();
+  loadGoogleFontInPreview(currentValues.headerFontFamily);
+  loadGoogleFontInPreview(currentValues.cardFontFamily);
+  updatePreview();
+  setStatus("Opened: " + name);
+  document.getElementById("no-file-msg").style.display = "none";
+  document.getElementById("field-ui").style.display = "";
+  document.getElementById("btn-save").disabled = false;
+  document.getElementById("btn-backup").style.display = "inline-block";
+  showBackupBanner();
+  markClean();
+}
+
+function showBackupBanner() {
+  const banner = document.getElementById("backup-banner");
+  banner.style.display = "flex";
+  document.body.classList.add("banner-open");
+}
+
+function downloadBackup() {
+  if (!originalSrc) return;
+  const blob = new Blob([originalSrc], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "_styles.backup.js";
+  a.click();
+  URL.revokeObjectURL(url);
+  setStatus("Backup downloaded ✓");
+}
+
+document.getElementById("btn-backup").addEventListener("click", downloadBackup);
+document.getElementById("backup-banner-close").addEventListener("click", () => {
+  document.getElementById("backup-banner").style.display = "none";
+  document.body.classList.remove("banner-open");
+});
+
+if (HAS_FSA) {
+  // Chrome / Edge — full read+write via File System Access API
+  document.getElementById("btn-open").addEventListener("click", async () => {
+    try {
+      [fileHandle] = await window.showOpenFilePicker({
+        types: [{ description: "JavaScript", accept: { "text/javascript": [".js"] } }],
+        multiple: false,
+      });
+      const file = await fileHandle.getFile();
+      onFileLoaded(await file.text(), file.name);
+      _saveHandle(fileHandle);
+      const reopen = document.getElementById("btn-reopen");
+      if (reopen) reopen.remove();
+    } catch (e) {
+      if (e.name !== "AbortError") setStatus("Error opening file");
+    }
+  });
+
+  document.getElementById("btn-save").addEventListener("click", async () => {
+    if (!fileHandle) return;
+    try {
+      const newSrc = buildStylesJs(originalSrc, currentValues);
+      const writable = await fileHandle.createWritable();
+      await writable.write(newSrc);
+      await writable.close();
+      originalSrc = newSrc;
+      setStatus("Saved ✓");
+      markClean();
+    } catch (e) {
+      setStatus("Save failed: " + e.message);
+    }
+  });
+
+  // ── restore last file on page load ────────────────────────────────────
+  (async () => {
+    const handle = await _loadHandle();
+    if (!handle) return;
+
+    const perm = await handle.queryPermission({ mode: "readwrite" });
+
+    if (perm === "granted") {
+      // Permission already active — silently reopen
+      fileHandle = handle;
+      try {
+        const file = await handle.getFile();
+        onFileLoaded(await file.text(), file.name);
+      } catch {
+        _clearHandle();
+      }
+    } else if (perm === "prompt") {
+      // Need a user gesture — show a reopen button
+      const btn = document.createElement("button");
+      btn.id = "btn-reopen";
+      btn.textContent = "↺ Reopen _styles.js";
+      btn.title = "Reopen the last file you had open";
+      btn.addEventListener("click", async () => {
+        const granted = await handle.requestPermission({ mode: "readwrite" });
+        if (granted === "granted") {
+          fileHandle = handle;
+          _saveHandle(handle);
+          try {
+            const file = await handle.getFile();
+            onFileLoaded(await file.text(), file.name);
+          } catch {
+            _clearHandle();
+            setStatus("Could not reopen file");
+          }
+        } else {
+          _clearHandle();
+        }
+        btn.remove();
+      });
+      // Insert before the Open button
+      const openBtn = document.getElementById("btn-open");
+      openBtn.parentNode.insertBefore(btn, openBtn);
+    } else {
+      // denied — forget it
+      _clearHandle();
+    }
+  })();
+
+} else {
+  // Firefox / Safari — read via <input type="file">, save via download
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".js";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
+
+  document.getElementById("btn-open").addEventListener("click", () => fileInput.click());
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => onFileLoaded(e.target.result, file.name);
+    reader.readAsText(file);
+  });
+
+  // Rename Save → Download, since we can't write back directly
+  const saveBtn = document.getElementById("btn-save");
+  saveBtn.textContent = "Download";
+  saveBtn.addEventListener("click", () => {
+    if (!originalSrc) return;
+    const newSrc = buildStylesJs(originalSrc, currentValues);
+    const blob = new Blob([newSrc], { type: "text/javascript" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "_styles.js";
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus("Downloaded — replace your _styles.js with this file");
+    markClean();
+  });
+
+  // Update hint text for Firefox users
+  document.querySelector(".no-file").innerHTML =
+    "<span>📂</span>Click <strong>Open _styles.js</strong> to begin.<br>" +
+    "Changes apply to the preview instantly.<br>" +
+    "<strong>Download</strong> saves a new <code>_styles.js</code> — drop it<br>into your project folder to apply.";
+}
+
+function setStatus(msg) {
+  document.getElementById("status").textContent = msg;
+}
+
+function markDirty() {
+  unsaved = true;
+  const btn = document.getElementById("btn-save");
+  btn.textContent = "Save *";
+  btn.classList.add("unsaved");
+}
+
+function markClean() {
+  unsaved = false;
+  const btn = document.getElementById("btn-save");
+  btn.textContent = "Save";
+  btn.classList.remove("unsaved");
+}
+
+// ── UI builder ────────────────────────────────────────────────────────────
+function buildUI() {
+  const container = document.getElementById("field-ui");
+  container.innerHTML = "";
+
+  // Theme presets
+  const themeSection = document.createElement("div");
+  themeSection.id = "theme-section";
+  const themeHeading = document.createElement("h2");
+  themeHeading.textContent = "Quick themes";
+  const themeGrid = document.createElement("div");
+  themeGrid.id = "theme-grid";
+
+  THEMES.forEach(theme => {
+    const btn = document.createElement("button");
+    btn.className = "theme-btn";
+    btn.textContent = theme.name;
+    btn.style.background = theme.vars.headerBackgroundColor;
+    btn.style.color = theme.vars.headerFontColor;
+    btn.style.borderColor = theme.vars.usernameColor;
+    btn.addEventListener("click", () => {
+      Object.assign(currentValues, theme.vars);
+      syncAllInputs();
+      updatePreview();
+      markDirty();
+      themeGrid.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+    themeGrid.appendChild(btn);
+  });
+
+  themeSection.append(themeHeading, themeGrid);
+  container.appendChild(themeSection);
+
+  // Fields
+  let currentGroup = null;
+  let groupEl = null;
+
+  FIELDS.forEach(field => {
+    if (field.group !== currentGroup) {
+      currentGroup = field.group;
+      const section = document.createElement("div");
+      section.className = "field-group";
+      const h2 = document.createElement("h2");
+      h2.textContent = field.group;
+      section.appendChild(h2);
+      container.appendChild(section);
+      groupEl = section;
+    }
+
+    const row = document.createElement("div");
+    row.className = "field-row";
+    const lbl = document.createElement("span");
+    lbl.className = "field-label";
+    lbl.textContent = field.label;
+    row.appendChild(lbl);
+
+    if (field.type === "color") {
+      const wrap = document.createElement("div");
+      wrap.className = "color-wrap";
+
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.background = currentValues[field.key] || "#888";
+      const picker = document.createElement("input");
+      picker.type = "color";
+      picker.dataset.key = field.key;
+      // Provide a best-effort hex for the native picker
+      picker.value = toHexFallback(currentValues[field.key] || "#888888");
+      swatch.appendChild(picker);
+
+      const text = document.createElement("input");
+      text.type = "text";
+      text.className = "color-text";
+      text.dataset.key = field.key;
+      text.value = currentValues[field.key] || "";
+      text.spellcheck = false;
+
+      const applyColor = (val) => {
+        val = val.trim();
+        if (isValidColor(val)) {
+          currentValues[field.key] = val;
+          swatch.style.background = val;
+          picker.value = toHexFallback(val);
+          text.classList.remove("invalid");
+          updatePreview();
+          markDirty();
+        } else {
+          text.classList.add("invalid");
+        }
+      };
+
+      picker.addEventListener("input", () => {
+        text.value = picker.value;
+        applyColor(picker.value);
+      });
+      text.addEventListener("change", () => applyColor(text.value));
+      text.addEventListener("keydown", e => { if (e.key === "Enter") applyColor(text.value); });
+
+      wrap.append(swatch, text);
+      row.appendChild(wrap);
+
+    } else if (field.type === "px") {
+      const wrap = document.createElement("div");
+      wrap.className = "px-wrap";
+      const slider = document.createElement("input");
+      slider.type = "range";
+      slider.className = "px-slider";
+      slider.dataset.key = field.key;
+      slider.min = String(field.min ?? 0);
+      slider.max = String(field.max ?? 100);
+      slider.value = String(parsePx(currentValues[field.key]));
+      const num = document.createElement("span");
+      num.className = "px-num";
+      num.textContent = slider.value;
+      slider.addEventListener("input", () => {
+        num.textContent = slider.value;
+        currentValues[field.key] = slider.value + "px";
+        updatePreview();
+        markDirty();
+      });
+      wrap.append(slider, num);
+      row.appendChild(wrap);
+
+    } else if (field.type === "select") {
+      const sel = document.createElement("select");
+      sel.className = "sp-select";
+      sel.dataset.key = field.key;
+      field.options.forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt;
+        if ((currentValues[field.key] || field.options[0]) === opt) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener("change", () => {
+        currentValues[field.key] = sel.value;
+        updatePreview();
+        markDirty();
+      });
+      row.appendChild(sel);
+
+    } else if (field.type === "font") {
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "display:flex;flex-direction:column;gap:5px;align-items:flex-end";
+
+      const currentFont = currentValues[field.key] || "";
+      const isCustom = currentFont && !GOOGLE_FONTS.includes(currentFont);
+
+      const sel = document.createElement("select");
+      sel.className = "sp-select";
+      sel.style.width = "160px";
+
+      // Build option groups
+      const groups = [
+        { label: "Rounded / Display", fonts: ["Fredoka","Righteous","Lilita One","Baloo 2","Comfortaa","Paytone One","Titan One","Boogaloo","Nunito","Varela Round"] },
+        { label: "Clean / Readable",  fonts: ["Outfit","DM Sans","Jost","Plus Jakarta Sans","Inter","Poppins","Raleway","Lato","Open Sans","Rubik"] },
+        { label: "Monospace",         fonts: ["Courier Prime","Space Mono","Share Tech Mono","Fira Code","Roboto Mono","Source Code Pro","JetBrains Mono","Inconsolata","IBM Plex Mono","Oxanium"] },
+      ];
+      groups.forEach(g => {
+        const og = document.createElement("optgroup");
+        og.label = g.label;
+        g.fonts.forEach(f => {
+          const o = document.createElement("option");
+          o.value = f;
+          o.textContent = f;
+          if (f === currentFont) o.selected = true;
+          og.appendChild(o);
+        });
+        sel.appendChild(og);
+      });
+      const customOpt = document.createElement("option");
+      customOpt.value = "__custom__";
+      customOpt.textContent = "Custom…";
+      if (isCustom) customOpt.selected = true;
+      sel.appendChild(customOpt);
+
+      // Custom text input — shown only when "Custom…" is selected
+      const customInp = document.createElement("input");
+      customInp.type = "text";
+      customInp.className = "color-text";
+      customInp.placeholder = "Any Google Font name";
+      customInp.spellcheck = false;
+      customInp.style.width = "160px";
+      customInp.style.display = isCustom ? "" : "none";
+      customInp.value = isCustom ? currentFont : "";
+      // not a data-key input — handled via sel's dataset.key
+      customInp.dataset.key = field.key;
+
+      const applyFont = (name) => {
+        if (!name) return;
+        currentValues[field.key] = name;
+        loadGoogleFontInPreview(name);
+        updatePreview();
+        markDirty();
+      };
+
+      sel.dataset.key = field.key;
+      sel.addEventListener("change", () => {
+        if (sel.value === "__custom__") {
+          customInp.style.display = "";
+          customInp.focus();
+        } else {
+          customInp.style.display = "none";
+          applyFont(sel.value);
+        }
+      });
+      customInp.addEventListener("change", () => applyFont(customInp.value.trim()));
+      customInp.addEventListener("keydown", e => { if (e.key === "Enter") applyFont(customInp.value.trim()); });
+
+      // Load current font into preview immediately
+      if (currentFont && sel.value !== "__custom__") loadGoogleFontInPreview(currentFont);
+
+      wrap.append(sel, customInp);
+      row.appendChild(wrap);
+
+    } else if (field.type === "text") {
+      const inp = document.createElement("input");
+      inp.type = "text";
+      inp.className = "color-text";  // reuse same monospace text style
+      inp.dataset.key = field.key;
+      inp.value = currentValues[field.key] || "";
+      inp.placeholder = field.placeholder || "";
+      inp.spellcheck = false;
+      inp.style.width = "160px";
+      const apply = () => {
+        currentValues[field.key] = inp.value.trim();
+        updatePreview();
+        markDirty();
+      };
+      inp.addEventListener("change", apply);
+      inp.addEventListener("keydown", e => { if (e.key === "Enter") apply(); });
+      row.appendChild(inp);
+    }
+
+    groupEl.appendChild(row);
+  });
+}
+
+function syncAllInputs() {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.dataset.key;
+    const val = currentValues[key];
+    if (!val) return;
+    if (el.tagName === "SELECT") {
+      el.value = val;
+    } else if (el.type === "text") {
+      el.value = val;
+      el.classList.remove("invalid");
+      const swatch = el.closest(".color-wrap")?.querySelector(".color-swatch");
+      if (swatch) swatch.style.background = val;
+      // If this is a font field, ensure the font is loaded
+      if (el.getAttribute("list") && el.getAttribute("list").startsWith("font-list-")) {
+        loadGoogleFontInPreview(val);
+      }
+    } else if (el.type === "color") {
+      el.value = toHexFallback(val);
+    } else if (el.type === "range") {
+      el.value = String(parsePx(val));
+      const num = el.nextElementSibling;
+      if (num) num.textContent = el.value;
+    }
+  });
+}
+
+// ── preview ───────────────────────────────────────────────────────────────
+function updatePreview() {
+  const v = currentValues;
+
+  // App / overlay
+  const overlay = document.getElementById("preview-overlay");
+  overlay.style.background = v.appBackgroundColor || "";
+  if (v.appBorderRadius) overlay.style.borderRadius = v.appBorderRadius;
+  if (v.appPadding) overlay.style.padding = v.appPadding;
+  if (v.headerFontFamily) overlay.style.fontFamily = `"${v.headerFontFamily}", sans-serif`;
+
+  // Header
+  const header = document.getElementById("preview-header");
+  header.style.display = v.headerDisplay === "none" ? "none" : "flex";
+  header.style.background = v.headerBackgroundColor || "";
+  header.style.color = v.headerFontColor || "";
+  if (v.headerFontSize) header.style.fontSize = v.headerFontSize;
+  if (v.headerFontWeight) header.style.fontWeight = v.headerFontWeight;
+  if (v.headerBorderRadius) header.style.borderRadius = v.headerBorderRadius;
+  if (v.headerPadding) header.style.padding = v.headerPadding;
+  if (v.headerMarginBottom) header.style.marginBottom = v.headerMarginBottom;
+  if (v.headerFontFamily) header.style.fontFamily = `"${v.headerFontFamily}", sans-serif`;
+
+  // Cards
+  ["preview-card1", "preview-card2"].forEach(id => {
+    const card = document.getElementById(id);
+    card.style.background = v.cardBackgroundColor || "";
+    if (v.cardBorderRadius) card.style.borderRadius = v.cardBorderRadius;
+    if (v.cardGapBetween) card.style.marginBottom = v.cardGapBetween;
+    if (v.cardPadding) card.style.padding = v.cardPadding;
+    if (v.cardFontFamily) card.style.fontFamily = `"${v.cardFontFamily}", sans-serif`;
+  });
+
+  // Usernames
+  ["preview-uname1", "preview-uname2"].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.color = v.usernameColor || "";
+    if (v.usernameFontSize) el.style.fontSize = v.usernameFontSize;
+    if (v.usernameFontWeight) el.style.fontWeight = v.usernameFontWeight;
+  });
+
+  // Active tasks
+  document.querySelectorAll(".preview-task:not(.done):not(.focus)").forEach(el => {
+    el.style.color = v.taskFontColor || "";
+    if (v.taskFontSize) el.style.fontSize = v.taskFontSize;
+    if (v.taskFontWeight) el.style.fontWeight = v.taskFontWeight;
+  });
+
+  // Focus task
+  const taskFocus = document.getElementById("preview-task-focus");
+  taskFocus.style.background = v.taskFocusBackgroundColor || "";
+  taskFocus.style.color = v.taskFocusFontColor || "";
+  if (v.taskFontSize) taskFocus.style.fontSize = v.taskFontSize;
+  if (v.taskFontWeight) taskFocus.style.fontWeight = v.taskFontWeight;
+  if (v.taskFocusBorderRadius) taskFocus.style.borderRadius = v.taskFocusBorderRadius;
+
+  // Done task
+  const taskDone = document.getElementById("preview-task-done");
+  taskDone.style.color = v.taskDoneFontColor || "";
+  if (v.taskFontSize) taskDone.style.fontSize = v.taskFontSize;
+  if (v.taskDoneFontStyle) taskDone.style.fontStyle = v.taskDoneFontStyle;
+  if (v.taskDoneTextDecoration) taskDone.style.textDecoration = v.taskDoneTextDecoration;
+}
+
+// ── light/dark toggle ─────────────────────────────────────────────────────
+document.getElementById("btn-theme-toggle").addEventListener("click", () => {
+  const light = document.body.classList.toggle("light");
+  document.getElementById("btn-theme-toggle").textContent = light ? "🌙" : "☀️";
+});
+
+// ── util ──────────────────────────────────────────────────────────────────
+function toHexFallback(raw) {
+  raw = (raw || "").trim();
+  if (/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(raw)) return raw.slice(0, 7);
+  const m = raw.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (m) return "#" + [m[1],m[2],m[3]].map(n => parseInt(n).toString(16).padStart(2,"0")).join("");
+  return "#888888";
+}
+</script>
+</body>
+</html>

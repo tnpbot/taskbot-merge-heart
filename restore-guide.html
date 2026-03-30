@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Restore Guide — Taskbot Style Config</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #111113;
+    color: #e4e2de;
+    line-height: 1.7;
+    padding: 48px 24px 80px;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #9db4cc;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 36px;
+    opacity: 0.8;
+  }
+  .back-link:hover { opacity: 1; }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #e4e2de;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: rgba(228,226,222,0.5);
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(157,180,204,0.7);
+    margin-bottom: 14px;
+    margin-top: 40px;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  .steps {
+    list-style: none;
+    counter-reset: steps;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .steps li {
+    counter-increment: steps;
+    display: flex;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .steps li:last-child { border-bottom: none; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(157,180,204,0.15);
+    border: 1.5px solid rgba(157,180,204,0.3);
+    color: #9db4cc;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .step-desc  { font-size: 14px; color: rgba(228,226,222,0.65); }
+
+  code {
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 13px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 5px;
+    padding: 1px 6px;
+    color: #c9a96e;
+  }
+
+  .tip {
+    margin-top: 40px;
+    background: rgba(184,204,176,0.08);
+    border: 1px solid rgba(184,204,176,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: rgba(228,226,222,0.75);
+  }
+  .tip strong { color: #b8ccb0; }
+
+  .warning {
+    margin-top: 20px;
+    background: rgba(201,169,110,0.08);
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: rgba(228,226,222,0.75);
+  }
+  .warning strong { color: #c9a96e; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="config.html">← Back to Style Config</a>
+
+  <h1>Restoring a Backup</h1>
+  <p class="subtitle">How to replace a changed <code>_styles.js</code> with your backup file.</p>
+
+  <h2>What is a backup?</h2>
+  <p style="font-size:14px;color:rgba(228,226,222,0.65);margin-bottom:20px;">
+    When you click <strong>⬇ Backup</strong> in the Style Config, it downloads a copy of your current
+    <code>_styles.js</code> named <code>_styles.backup.js</code>. This is a plain JavaScript file —
+    no special tools needed to restore it.
+  </p>
+
+  <h2>How to restore</h2>
+  <ol class="steps">
+    <li>
+      <span class="step-num">1</span>
+      <div class="step-body">
+        <div class="step-title">Locate your backup file</div>
+        <div class="step-desc">
+          Find <code>_styles.backup.js</code> in your Downloads folder (or wherever your browser saves files).
+        </div>
+      </div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div class="step-body">
+        <div class="step-title">Open your taskbot project folder</div>
+        <div class="step-desc">
+          Navigate to the folder that contains <code>_styles.js</code> — the same folder as this
+          <code>config.html</code> file.
+        </div>
+      </div>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <div class="step-body">
+        <div class="step-title">Rename the backup file</div>
+        <div class="step-desc">
+          Rename <code>_styles.backup.js</code> to <code>_styles.js</code>.
+          You can optionally rename the current (broken) <code>_styles.js</code> to
+          <code>_styles.old.js</code> first, just to keep it around.
+        </div>
+      </div>
+    </li>
+    <li>
+      <span class="step-num">4</span>
+      <div class="step-body">
+        <div class="step-title">Confirm the replacement</div>
+        <div class="step-desc">
+          If your OS asks whether to replace the existing file, confirm yes.
+          Your project folder should now contain the restored <code>_styles.js</code>.
+        </div>
+      </div>
+    </li>
+    <li>
+      <span class="step-num">5</span>
+      <div class="step-body">
+        <div class="step-title">Refresh your OBS browser source</div>
+        <div class="step-desc">
+          In OBS, right-click your browser source → <strong>Refresh</strong>. The restored styles
+          will load immediately.
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <hr class="divider" />
+
+  <h2>Keeping backups organized</h2>
+  <p style="font-size:14px;color:rgba(228,226,222,0.65);margin-bottom:16px;">
+    Each backup download is always named <code>_styles.backup.js</code>. If you want to keep
+    multiple backups (e.g. before each stream), rename the file after downloading:
+  </p>
+  <ol class="steps">
+    <li>
+      <span class="step-num">1</span>
+      <div class="step-body">
+        <div class="step-title">Download the backup as usual</div>
+        <div class="step-desc">Click <strong>⬇ Backup</strong> in the Style Config before making changes.</div>
+      </div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div class="step-body">
+        <div class="step-title">Rename with a date or label</div>
+        <div class="step-desc">
+          For example: <code>_styles.backup.2025-10-14.js</code> or <code>_styles.backup.forest-theme.js</code>.
+          Store these in a <code>backups/</code> subfolder inside your project if you like — OBS won't read them.
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="tip">
+    <strong>Tip:</strong> The Style Config only edits the values inside <code>_styles.js</code> — it never
+    touches any other file. If something looks wrong with your overlay after saving, restoring
+    <code>_styles.js</code> is all you need to do.
+  </div>
+
+  <div class="warning">
+    <strong>Note:</strong> The backup contains your styles at the moment you clicked ⬇ Backup.
+    Any saves made <em>after</em> that point are not included — download a new backup whenever you
+    reach a state you're happy with.
+  </div>
+
+</div>
+</body>
+</html>
