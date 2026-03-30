@@ -44,6 +44,7 @@ Viewers can create, edit, mark as done, and delete tasks from the list. This Tas
 - [Customization settings](#customization-settings)
   - [App Behavior Settings](#behavior-settings)
   - [Styles Settings](#styles-settings)
+    - [Style Config Tool](#style-config-tool)
 - [Commands](#commands)
   - [Commands for Everyone](#commands-for-everyone)
   - [Commands for Broadcasters and Moderators](#commands-for-broadcasters-and-moderators)
@@ -110,7 +111,7 @@ twitch_channel = "Jujoco_Dev",
 
 1. **Setup a Browser Source in OBS** - Open OBS and add a new `Browser Source` to your scene. Name it `TaskList overlay` or something you can easily remember.
 
-2. **Select the Local file checkbox** - In the Browser Source settings, select `Local file` and then `Browse` to the location where you unzipped the downloaded files. Select the `index.html` file and click `Open`.
+2. **Select the Local file checkbox** - In the Browser Source settings, select `Local file` and then `Browse` to the location where you unzipped the downloaded files. Select the `tasklist.html` file and click `Open`.
 
 3. **Set the Width and Height** - Next, in the Browser Source, set the width and height. I recommend 660px Width and 1600px Height. Adjust as needed.
 
@@ -120,7 +121,7 @@ twitch_channel = "Jujoco_Dev",
 
 ## Customization settings
 
-> IMPORTANT! — Any changes you make to the `_auth.js, _settings.js, _styles.js, _configAdmin.js, or _configUser.js` will require you to click the `Refresh Cache of Current Page` button in the Browser Source you just created to apply the changes. (see image above, #6.)
+> IMPORTANT! — Any changes you make to `_auth.js`, `_settings.js`, `_configAdmin.js`, or `_configUser.js` directly will require you to click the `Refresh Cache of Current Page` button in the Browser Source to apply the changes. Changes made through the **Style Config tool** (`config.html`) are applied on next refresh automatically.
 
 ### Behavior Settings
 
@@ -135,35 +136,49 @@ Open the `_settings.js` file and modify the following settings to customized the
 - **"UA"**: Ukrainian translation
 - **"DE"**: German translation
 - **"PT_BR"**: Brazilian Portuguese translation
+
 `maxTasksPerUser`: Default = **10**
 
 - **number**: A value between 1 - 20.
 
-`scrollSpeed`: Default = **20**
+`scrollSpeed`: Default = **60**
 
-- **number**: A value between 1 - 50.
+- **number**: A value between 1 - 100.
+
+`pauseAtTop`: Default = **100**
+
+- **number**: Milliseconds to pause at the top of the list before scrolling again.
 
 `showUsernameColor`: Default = **true**
 
-- **true**: will shows the user's twitch chat color
-- **false**: will show the color you set in the `username-color` style
+- **true**: will show the user's Twitch chat color
+- **false**: will show the color you set in the `usernameColor` style
 
-`headerFeature`: Default = "timer"
+`headerTitle`: Default = **"coworking session"**
 
-Enable one will disable the others.
+- **string**: Text displayed on the left side of the header.
 
-- **"timer"**: Display a timer in the header
-- **"text"**: Display a custom text in the header
-- **"commands"**: Display commands tips in the header
-- **"tasks-only"**: Display only the tasks count in the header
+`showTimer`: Default = **true**
 
-`headerCustomText`: Default = "Custom Text"
+- **true**: Mods can use the `!timer` command to start a focus/break timer in the header.
+- **false**: Timer is disabled.
 
-HeaderFeature above must be set to "Text"
+`botResponsePrefix`: Default = **"🤖💬 "**
 
-`botResponsePrefix`: Default = "🤖💬 "
+The prefix the bot uses to respond to users in chat.
 
-The prefix that the bot will use to respond to the user in the chat.
+`focusSessionEndMessage`: Default = **"🎉 Focus session complete! ..."**
+
+- **string**: Message sent to chat when a focus timer session ends.
+
+`clockTimezone`: Default = **"America/New_York"**
+
+- **string**: IANA timezone string (e.g. `"Europe/London"`, `"Asia/Tokyo"`).
+
+`clockFormat`: Default = **"24"**
+
+- **"12"**: 12-hour format (e.g. 3:45 PM)
+- **"24"**: 24-hour format (e.g. 15:45)
 
 `testMode`: Default = **false**
 
@@ -174,21 +189,33 @@ Use this to test the TaskList without affecting the real task list and visually 
 
 ### Styles Settings
 
-Open the `_styles.js` file and modify the following settings to customized the TaskList appearance. Default values are provided below. If at any point you want to reset the styles to the default values you can find the default values below next to each style name.
+#### Style Config Tool
 
-#### Font Family - more available @ <https://fonts.google.com>
+The easiest way to customize the overlay's appearance is to open **`config.html`** in your browser. It provides a live-preview editor where you can tweak all style values and save them directly back to `_styles.js` — no text editing required.
+
+- **Open** — loads your current `_styles.js` file
+- **Backup (⬇)** — downloads a timestamped copy of your current styles
+- **Save** — writes your changes back to `_styles.js`
+
+If you ever need to roll back to a saved backup, see **`restore-guide.html`** for step-by-step instructions.
+
+#### Manual Styles (advanced)
+
+You can also open `_styles.js` directly in a text editor. Default values are listed below.
+
+##### Font Family - more available @ <https://fonts.google.com>
 
 - headerFontFamily: "Roboto Mono"
 - cardFontFamily: "Roboto Mono"
 
-#### App Styles
+##### App Styles
 
 - appBorderRadius: Default = **"5px"**
 - appPadding: Default = **"8px"**
 - appBackgroundImage: Default = **"url(../images/transparent-image.png)"**
 - appBackgroundColor: Default = **"rgba(0, 0, 0, 0)"**
 
-#### Header Styles
+##### Header Styles
 
 - headerDisplay: Default = **"flex"**
 - headerBorderRadius: Default = **"6px"**
@@ -198,19 +225,19 @@ Open the `_styles.js` file and modify the following settings to customized the T
 - headerFontColor: Default = **"#FFFFFF"**
 - headerFontWeight: Default = **"normal"**
 
-#### Card Styles
+##### Card Styles
 
 - cardGapBetween: Default = **"6px"**
 - cardBorderRadius: Default = **"6px"**
 - cardBackgroundColor: Default = **"rgba(0, 0, 0, 0.7)"**
 
-#### Username Styles
+##### Username Styles
 
 - usernameFontSize: Default = **"18px"**
 - usernameColor: Default = **"#FFFFFF"**
 - usernameFontWeight: Default = **"normal"**
 
-#### Task Styles
+##### Task Styles
 
 - taskFontSize: Default = **"16px"**
 - taskFontColor: Default = **"#FFFFFF"**
@@ -236,6 +263,10 @@ Open the `_styles.js` file and modify the following settings to customized the T
   - example: `!focus 1`
   - example: `!focus 3`
 
+- `!unfocus` - Clear the current focused task
+
+  - example: `!unfocus`
+
 - `!edit` - Edit a single task
 
   - example: `!edit 1 read ch. 4`
@@ -245,6 +276,10 @@ Open the `_styles.js` file and modify the following settings to customized the T
 
   - example: `!done 1`
   - example: `!done 2, 3`
+
+- `!doneall` - Mark all of your tasks as done
+
+  - example: `!doneall`
 
 - `!delete` - Delete task(s) (multiple tasks must be separated by a comma or use `all` to delete all tasks)
 
@@ -256,13 +291,25 @@ Open the `_styles.js` file and modify the following settings to customized the T
 
   - example: `!check`
 
+- `!mytasks` or `!backlog` - List all of your current tasks
+
+  - example: `!mytasks`
+
+- `!currenttask` or `!ct` - Show your current focused task
+
+  - example: `!currenttask`
+
+- `!clearmydone` - Clear your own completed tasks
+
+  - example: `!clearmydone`
+
+- `!taskhelp` - Show available commands
+
+  - example: `!taskhelp`
+
 - `!credit` - Show the credits
 
   - example: `!credit`
-
- - `!cleardone` - Clear your own completed tasks
-
-  - example: `!cleardone`
 
 ### Commands for Broadcasters and Moderators
 
@@ -283,6 +330,10 @@ Open the `_styles.js` file and modify the following settings to customized the T
 
   - example: `!clearuser jujoco_dev` or `Jujoco_Dev`
 
+- `!clearold` - Clear tasks older than a set number of days
+
+  - example: `!clearold 7`
+
 ## Aliases
 
 ### User Commands
@@ -290,6 +341,8 @@ Open the `_styles.js` file and modify the following settings to customized the T
 **add task commands:**
 
 - `!task`
+- `!t`
+- `!add`
 - `!añadir` (Spanish)
 - `!ajouter` (French)
 - `!追加` (Japanese)
@@ -306,6 +359,16 @@ Open the `_styles.js` file and modify the following settings to customized the T
 - `!фокус` (Ukrainian)
 - `!fokus` (German)
 - `!focar` (Brazilian Portuguese)
+
+**unfocus commands:**
+
+- `!unfocus`
+- `!desenfoque` (Spanish)
+- `!défocaliser` (French)
+- `!集中解除` (Japanese)
+- `!розфокус` (Ukrainian)
+- `!entfokus` (German)
+- `!desfocar` (Brazilian Portuguese)
 
 **edit task commands:**
 
@@ -325,11 +388,13 @@ Open the `_styles.js` file and modify the following settings to customized the T
 - `!完了` (Japanese)
 - `!готово` (Ukrainian)
 - `!erledigt` (German)
-- `!completo` (Brazilian Portuguese)
+- `!concluir` (Brazilian Portuguese)
 
 **delete task commands:**
 
 - `!delete`
+- `!remove`
+- `!clear`
 - `!eliminar` (Spanish)
 - `!supprimer` (French)
 - `!削除` (Japanese)
@@ -340,16 +405,13 @@ Open the `_styles.js` file and modify the following settings to customized the T
 **check commands:**
 
 - `!check`
-- `!comprobar` (Spanish)
-- `!vérifier` (French)
-- `!チェック` (Japanese)
-- `!перевірити` (Ukrainian)
+- `!mytask`
 - `!prüfen` (German)
 - `!verificar` (Brazilian Portuguese)
 
 **help commands:**
 
-- `!help`
+- `!taskhelp`
 - `!ayuda` (Spanish)
 - `!aide` (French)
 - `!ヘルプ` (Japanese)
@@ -365,7 +427,7 @@ Open the `_styles.js` file and modify the following settings to customized the T
 - `!クレジット` (Japanese)
 - `!кредит` (Ukrainian)
 - `!kontakt` (German)
-- `!crédito` (Brazilian Portuguese)
+- `!credito` (Brazilian Portuguese)
 
 ## Credits
 
