@@ -208,6 +208,31 @@
 	font-size: 0.8em;
 }
 
+/* ─── Focus Cycle Pill ─────────────────────────────────── */
+
+.focus-cycle-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: rgba(201, 169, 110, 0.12);
+	border: 1.5px solid rgba(201, 169, 110, 0.28);
+	border-radius: 999px;
+	padding: 3px 14px;
+	font-family: var(--header-font-family, "arial");
+	font-size: calc(var(--header-font-size, 18) * 2);
+	font-weight: var(--header-font-weight);
+	color: var(--header-font-color);
+	font-variant-numeric: tabular-nums;
+}
+
+.focus-cycle-sep {
+	font-size: 0.8em;
+}
+
+.focus-cycle-pill.hidden {
+	display: none;
+}
+
 /* ─── Header Right: Clock + Done Pill ──────────────────── */
 
 .clock-time {

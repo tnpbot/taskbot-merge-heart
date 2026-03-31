@@ -160,8 +160,8 @@ Open the `_settings.js` file and modify the following settings to customized the
 
 `showTimer`: Default = **true**
 
-- **true**: Mods can use the `!timer` command to start a focus/break timer in the header.
-- **false**: Timer is disabled.
+- **true**: Mods can use the `!timer` command to start a focus/break timer in the header. A focus cycle pill (🍅) is displayed in the header tracking completed focus periods for the session.
+- **false**: Timer is disabled and the focus cycle pill is hidden.
 
 `botResponsePrefix`: Default = **"🤖💬 "**
 
@@ -313,10 +313,19 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 
 ### Commands for Broadcasters and Moderators
 
-- `!timer` - Set the focus and break timer for a session (in minutes)
+- `!timer` - Set the focus and break timer for a session (in minutes). Optionally specify number of cycles.
 
-  - example: `!timer 60/10`
-  - example: `!timer 90/15`
+  - example: `!timer 60/10` — 60 min focus / 10 min break, 1 cycle
+  - example: `!timer 90/15` — 90 min focus / 15 min break, 1 cycle
+  - example: `!timer 40/10/3` — 40 min focus / 10 min break, 3 cycles
+
+- `!timer pause` - Pause a running timer (focus or break)
+
+  - example: `!timer pause`
+
+- `!timer continue` - Resume a paused timer
+
+  - example: `!timer continue`
 
 - `!clearlist` - Clear all tasks from the list
 

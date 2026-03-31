@@ -15,12 +15,16 @@ import { breakStartAudioEl, breakEndAudioEl } from "./Timer.js";
  */
 export default class App {
 	#timerIntervalId = null;
+	#timerPaused = false;
+	#timerResumeFn = null;
 	#ctTimer = null;
 	#roster = {};
 	#languageCode;
 	#maxTasksPerUser;
 	#headerTitle;
 	#showTimer;
+	#sessionCycles;
+	#storeName;
 
 	/**
 	 * @constructor
@@ -33,6 +37,8 @@ export default class App {
 		this.#maxTasksPerUser = _settings.maxTasksPerUser;
 		this.#headerTitle = _settings.headerTitle || "";
 		this.#showTimer = !!_settings.showTimer;
+		this.#storeName = storeName;
+		this.#sessionCycles = parseInt(localStorage.getItem(storeName + "_sessionCycles") || "0", 10);
 	}
 
 	/**
@@ -98,6 +104,7 @@ export default class App {
 	 */
 	renderTaskHeader() {
 		this.renderTaskCount();
+		this.renderCycleCount();
 		this.renderClock();
 		// Set title text — always shown when timer is not active
 		const titleEl = document.querySelector(".header-title");
@@ -113,6 +120,17 @@ export default class App {
 		if (doneEl) doneEl.textContent = this.userList.sessionDone.toString();
 	}
 
+	renderCycleCount() {
+		const pill = document.querySelector(".focus-cycle-pill");
+		if (!pill) return;
+		if (!this.#showTimer) {
+			pill.classList.add("hidden");
+			return;
+		}
+		pill.classList.remove("hidden");
+		pill.querySelector(".focus-cycle-count").textContent = this.#sessionCycles.toString();
+	}
+
 	/**
 	 * Start a focus session timer with optional cycle count
 	 * @param {number} FocusDuration - The duration of the focus session in minutes
@@ -122,6 +140,8 @@ export default class App {
 	 */
 	startTimer(FocusDuration = 0, breakDuration = 10, cycles = 1) {
 		this.#timerIntervalId && clearInterval(this.#timerIntervalId);
+		this.#timerPaused = false;
+		this.#timerResumeFn = null;
 		const timerEl = document.querySelector(".timer");
 		const titleEl = document.querySelector(".header-title");
 		/** @type {HTMLElement} */
@@ -156,6 +176,12 @@ export default class App {
 
 		updateTitle("Focus");
 
+		this.#timerResumeFn = () => {
+			updateTitle(isInFocus ? "Focus" : "Break");
+			this.#timerIntervalId = setInterval(updateTimer, 1000);
+			this.#timerPaused = false;
+		};
+
 		const updateTimer = () => {
 			const minutes = Math.floor(timer / 60).toString().padStart(2, "0");
 			const seconds = (timer % 60).toString().padStart(2, "0");
@@ -163,6 +189,9 @@ export default class App {
 
 			if (timer === 0) {
 				if (isInFocus) {
+					this.#sessionCycles++;
+					localStorage.setItem(this.#storeName + "_sessionCycles", String(this.#sessionCycles));
+					this.renderCycleCount();
 					updateTitle("Break");
 					timerElement.textContent = "00:00";
 					breakStartAudioEl.play();
@@ -180,6 +209,8 @@ export default class App {
 					} else {
 						// All cycles complete — restore title
 						clearInterval(this.#timerIntervalId);
+						this.#timerPaused = false;
+						this.#timerResumeFn = null;
 						breakEndAudioEl.play();
 						timerEl.classList.add("hidden");
 						if (titleEl) titleEl.classList.remove("hidden");
@@ -191,6 +222,31 @@ export default class App {
 		};
 
 		this.#timerIntervalId = setInterval(updateTimer, 1000);
+	}
+
+	/**
+	 * Pause a running timer. Returns false if no timer is running or already paused.
+	 * @returns {boolean}
+	 */
+	pauseTimer() {
+		const timerEl = document.querySelector(".timer");
+		if (!timerEl || timerEl.classList.contains("hidden") || this.#timerPaused) return false;
+		clearInterval(this.#timerIntervalId);
+		this.#timerIntervalId = null;
+		this.#timerPaused = true;
+		const timerTitleEl = /** @type {HTMLElement|null} */ (timerEl.querySelector(".timer-title"));
+		if (timerTitleEl) fadeInOutText(timerTitleEl, "⏸ Paused");
+		return true;
+	}
+
+	/**
+	 * Resume a paused timer. Returns false if timer is not paused.
+	 * @returns {boolean}
+	 */
+	resumeTimer() {
+		if (!this.#timerPaused || !this.#timerResumeFn) return false;
+		this.#timerResumeFn();
+		return true;
 	}
 
 	/**
@@ -245,6 +301,28 @@ export default class App {
 					this.#showTimer &&
 					_adminConfig.commands.timer.includes(command)
 				) {
+					const lowerMessage = message.toLowerCase().trim();
+
+					// Handle pause
+					if (lowerMessage === "pause") {
+						const paused = this.pauseTimer();
+						template = paused
+							? _adminConfig.responseTo[this.#languageCode].timerPause
+							: _adminConfig.responseTo[this.#languageCode].timerNotRunning;
+						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "pause" })); } catch (e) {}
+						return respondMessage(template, username, responseDetail);
+					}
+
+					// Handle continue/resume
+					if (lowerMessage === "continue" || lowerMessage === "resume") {
+						const resumed = this.resumeTimer();
+						template = resumed
+							? _adminConfig.responseTo[this.#languageCode].timerContinue
+							: _adminConfig.responseTo[this.#languageCode].timerNotPaused;
+						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "continue" })); } catch (e) {}
+						return respondMessage(template, username, responseDetail);
+					}
+
 					// Parse timer command: !timer 40/10 or !timer 40/10/5
 					const parts = message.split("/");
 					const focusTime = parts[0];
@@ -310,10 +388,6 @@ export default class App {
 					try {
 						// Strip @ symbol if present (Twitch mentions include @)
 						const targetUsername = message.replace(/^@/, '');
-
-						// Check if the user being cleared has any focused tasks
-						const userTasks = document.querySelectorAll(`[data-user="${targetUsername}"] .task.focus`);
-						const hadFocusedTask = userTasks.length > 0;
 
 						const user = this.userList.deleteUser(targetUsername);
 						this.deleteUserFromDOM(user);
@@ -439,7 +513,7 @@ export default class App {
 					username,
 					indices
 				);
-				tasks.forEach(({ id, description }) => {
+				tasks.forEach(({ id }) => {
 					this.completeTaskFromDOM(id);
 				});
 				if (tasks.length === 0) {
@@ -493,7 +567,7 @@ export default class App {
 						username,
 						indices
 					);
-					tasks.forEach(({ id, description }) => {
+					tasks.forEach(({ id }) => {
 						this.deleteTaskFromDOM(id);
 					});
 					if (tasks.length === 0) {
@@ -536,7 +610,17 @@ export default class App {
 			else if (_userConfig.commands.myTasks.includes(command)) {
 				// ALL TASKS SPOTLIGHT
 				this.showAllTasksFromDOM(username);
-				return { message: null, error: false };
+				const taskMap = this.userList.checkUserTasks(username);
+				const list = [];
+				for (let [taskNumber, task] of taskMap) {
+					list.push(`📝 ${taskNumber + 1}. ${task.description}`);
+				}
+				responseDetail = list.join(" ");
+				if (responseDetail === "") {
+					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
+				} else {
+					template = _userConfig.responseTo[this.#languageCode].check;
+				}
 			}
 			else if (_userConfig.commands.check.includes(command)) {
 				// CHECK TASKS
@@ -589,7 +673,10 @@ export default class App {
 		const shelfTags = document.getElementById("shelf-tags");
 		if (shelfTags) shelfTags.innerHTML = "";
 		this.#roster = {};
+		this.#sessionCycles = 0;
+		localStorage.removeItem(this.#storeName + "_sessionCycles");
 		this.renderTaskCount();
+		this.renderCycleCount();
 	}
 
 	/**
@@ -847,7 +934,7 @@ export default class App {
 
 	deleteUserFromDOM(user) {
 		// remove user card and reduce total tasks count
-		const { username, tasks } = user;
+		const { username } = user;
 		const userCardEls = document.querySelectorAll(
 			`[data-user="${username}"]`
 		);
