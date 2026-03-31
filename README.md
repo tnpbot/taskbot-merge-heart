@@ -1,7 +1,9 @@
 <div align="center">
-<img src="./images/live-sample.png" style="max-width: 800px;">
+<img src="./images/slate.png" style="max-width: 800px;">
 <br >
-<img src="./images/customize-sample.png" style="max-width: 800px;">
+<img src="./images/espresso.png" style="max-width: 800px;">
+<br ><img src="./images/forest.png" style="max-width: 800px;">
+<br ><img src="./images/night.png" style="max-width: 800px;">
 </div>
 
 # Twitch Chatbot Multitask Task List Overlay
