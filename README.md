@@ -1,4 +1,4 @@
-<div align="center">
+<div>
 <img src="./images/slate.png" style="max-height: 200px;">
 <img src="./images/espresso.png" style="max-height: 200px;">
 <img src="./images/forest.png" style="max-height: 200px;">
