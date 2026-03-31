@@ -13,40 +13,40 @@ const _styles = {
   appBorderRadius: "40px", // px value
   appPadding: "10px", // px value
   appBackgroundImage: "url(../images/transparent-image.png)", // image must go in images folder
-  appBackgroundColor: "#281d4ba8", // rgba value https://rgbcolorpicker.com
+  appBackgroundColor: "rgba(18,20,32,0.96)", // rgba value https://rgbcolorpicker.com
 
   //  Header Styles
   headerDisplay: "flex", // "none" to hide header or "flex" to show header
   headerBorderRadius: "20px", // px value
   headerMarginBottom: "6px", // px value
   headerPadding: "12px", // px value
-  headerBackgroundColor: "rgb(61, 48, 105)", // rgba value https://rgbcolorpicker.com/
-  headerFontSize: "16px", // px value
-  headerFontColor: "#FFFFFF", // hex value
+  headerBackgroundColor: "#1a1c2e", // rgba value https://rgbcolorpicker.com/
+  headerFontSize: "14px", // px value
+  headerFontColor: "#e2e4f0", // hex value
   headerFontWeight: "normal", // "normal", "lighter", "bold"
 
   // Card Styles
   cardGapBetween: "6px", // px value
   cardBorderRadius: "20px", // px value
   cardPadding: "15px", // px value
-  cardBackgroundColor: "#535362b6", // rgba value https://rgbcolorpicker.com/
+  cardBackgroundColor: "rgba(22,24,40,0.95)", // rgba value https://rgbcolorpicker.com/
 
   // Username Styles
   usernameFontSize: "18px", // px value
-  usernameColor: "#8288e0ff", // hex value
+  usernameColor: "#a0a8e0", // hex value
   usernameFontWeight: "normal", // "normal", "lighter", "bold"
 
   // Task Styles
-  taskFontSize: "12px", // px value
-  taskFontColor: "#FFFFFF", // hex value
+  taskFontSize: "16px", // px value
+  taskFontColor: "#e2e4f0", // hex value
   taskFontWeight: "normal", // "normal", "lighter", "bold"
 
-  taskDoneFontColor: "#b0b0b0", // hex value
+  taskDoneFontColor: "rgba(226,228,240,0.38)", // hex value
   taskDoneFontStyle: "italic", // "italic" or "normal"
   taskDoneTextDecoration: "line-through", // "line-through" or "none"
 
-  taskFocusFontColor: "#111111", // hex value
-  taskFocusBackgroundColor: "rgba(255, 255, 255, 0.7)", // rgba value https://rgbcolorpicker.com/
+  taskFocusFontColor: "#e2e4f0", // hex value
+  taskFocusBackgroundColor: "rgba(160,168,224,0.45)", // rgba value https://rgbcolorpicker.com/
   taskFocusBorderRadius: "15px", // hex value
 
   // ==========================
