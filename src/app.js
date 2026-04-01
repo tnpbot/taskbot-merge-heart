@@ -94,6 +94,7 @@ export default class App {
 		animateScroll();
 		this.userList.getAllUsers().forEach(user => {
 			this.renderUserCount(user.username);
+			this.addToRoster(user.username);
 			fetchPronouns(user.username);
 		});
 	}

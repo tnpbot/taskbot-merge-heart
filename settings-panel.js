@@ -2,18 +2,43 @@
  * Step 9 — OBS Interact Settings Panel
  *
  * A hidden trigger dot opens a runtime style panel that maps directly to
- * the CSS variables loaded by styleLoader.js. All changes are live;
- * nothing is persisted (refresh restores _styles defaults).
+ * the CSS variables loaded by styleLoader.js. All changes are live and
+ * persisted to localStorage; refresh restores panel values, not _styles defaults.
  */
 (function () {
 	// ── helpers ──────────────────────────────────────────────────────────
 	const root = document.documentElement;
+	const STORAGE_KEY = "taskbot_panel_styles";
+
+	function loadPersistedStyles() {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+			for (const [cssVar, val] of Object.entries(saved)) {
+				root.style.setProperty(cssVar, val);
+			}
+		} catch (_) {}
+	}
+
+	function persistVar(cssVar, value) {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+			saved[cssVar] = value;
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+		} catch (_) {}
+	}
+
+	function clearPersistedStyles() {
+		try {
+			localStorage.removeItem(STORAGE_KEY);
+		} catch (_) {}
+	}
 
 	function getVar(cssVar) {
 		return root.style.getPropertyValue(cssVar).trim();
 	}
 	function setVar(cssVar, value) {
 		root.style.setProperty(cssVar, value);
+		persistVar(cssVar, value);
 	}
 
 	// Return the raw CSS var value as a display string for the hex text input.
@@ -291,10 +316,12 @@
 		for (const [key, val] of Object.entries(_styles)) {
 			root.style.setProperty(toCSSVar(key), val);
 		}
+		clearPersistedStyles();
 		syncInputs(panel);
 	}
 
 	// ── init ──────────────────────────────────────────────────────────────
+	loadPersistedStyles();
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", buildPanel);
 	} else {
