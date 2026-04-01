@@ -178,6 +178,20 @@ export default class UserList {
 	}
 
 	/**
+	 * Clear focus from all tasks for a user
+	 * @param {string} username - The username of the user
+	 * @throws {Error} User not found
+	 */
+	unfocusUserTasks(username) {
+		const user = this.getUser(username);
+		if (!user) {
+			throw new Error(`User ${username} not found`);
+		}
+		user.tasks.forEach(t => t.setFocusStatus(false));
+		this.#commitToLocalStorage();
+	}
+
+	/**
 	 * Mark the user tasks as complete
 	 * @param {string} username - The username of the user
 	 * @param {number | number[]} indices - The index of the task to complete

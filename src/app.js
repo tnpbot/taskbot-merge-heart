@@ -499,7 +499,8 @@ export default class App {
 				template = _userConfig.responseTo[this.#languageCode].focusTask;
 			}
 			else if (_userConfig.commands.unfocusTask.includes(command)) {
-				// NEW: UNFOCUS TASK
+				// UNFOCUS TASK
+				this.userList.unfocusUserTasks(username);
 				this.unfocusAllTasks(username);
 				template = _userConfig.responseTo[this.#languageCode].unfocusTask;
 			}
@@ -619,21 +620,6 @@ export default class App {
 				if (responseDetail === "") {
 					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
 				} else {
-					template = _userConfig.responseTo[this.#languageCode].check;
-				}
-			}
-			else if (_userConfig.commands.check.includes(command)) {
-				// CHECK TASKS
-				const taskMap = this.userList.checkUserTasks(username);
-				const list = [];
-				for (let [taskNumber, task] of taskMap) {
-					list.push(`📝 ${taskNumber + 1}. ${task.description}`);
-				}
-				responseDetail = list.join(" ");
-				if (responseDetail === "") {
-					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
-				}
-				else {
 					template = _userConfig.responseTo[this.#languageCode].check;
 				}
 			}
