@@ -378,6 +378,8 @@
 	border-radius: 36px;
 	padding: 52px 68px;
 	max-width: 88%;
+	max-height: 82vh;
+	overflow-y: hidden;
 	text-align: center;
 	font-family: var(--card-font-family, "Fredoka", sans-serif);
 	animation: ctIn .38s cubic-bezier(.34,1.3,.64,1) both;
