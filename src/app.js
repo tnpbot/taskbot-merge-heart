@@ -778,16 +778,6 @@ export default class App {
 	}
 
 	/**
-	 * Delete the user in the DOM
-	 * @param {User} user
-	 * @returns {void}
-	 */
-	/**
-	 * Show the current/focused task popup for a user
-	 * @param {string} username
-	 * @returns {void}
-	 */
-	/**
 	 * Add a user pill to the roster shelf if not already present
 	 * @param {string} username
 	 * @returns {void}
@@ -835,6 +825,11 @@ export default class App {
 		});
 	}
 
+	/**
+	 * Show the current/focused task popup for a user
+	 * @param {string} username
+	 * @returns {void}
+	 */
 	showCurrentTaskFromDOM(username) {
 		const user = this.userList.getUser(username);
 		if (!user) return;
@@ -918,6 +913,11 @@ export default class App {
 		}, 6000);
 	}
 
+	/**
+	 * Delete the user in the DOM
+	 * @param {User} user
+	 * @returns {void}
+	 */
 	deleteUserFromDOM(user) {
 		// remove user card and reduce total tasks count
 		const { username } = user;
