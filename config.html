@@ -441,6 +441,9 @@ const FIELDS = [
   { group: "Header",   label: "Font color",         key: "headerFontColor",              type: "color" },
   { group: "Header",   label: "Font size (px)",     key: "headerFontSize",               type: "px", min: 8,  max: 40 },
   { group: "Header",   label: "Font weight",        key: "headerFontWeight",             type: "select", options: ["normal","bold","lighter"] },
+  { group: "Header",   label: "Left font weight",   key: "headerLeftFontWeight",         type: "select", options: ["","normal","bold","lighter","100","200","300","400","500","600","700","800","900"] },
+  { group: "Header",   label: "Right font weight",  key: "headerRightFontWeight",        type: "select", options: ["","normal","bold","lighter","100","200","300","400","500","600","700","800","900"] },
+  { group: "Header",   label: "Pill font weight",   key: "headerPillFontWeight",         type: "select", options: ["","normal","bold","lighter","100","200","300","400","500","600","700","800","900"] },
   { group: "Header",   label: "Border radius (px)", key: "headerBorderRadius",           type: "px", min: 0, max: 60 },
   { group: "Header",   label: "Padding (px)",       key: "headerPadding",                type: "px", min: 4, max: 40 },
   { group: "Header",   label: "Margin bottom (px)", key: "headerMarginBottom",           type: "px", min: 0, max: 30 },
@@ -1006,6 +1009,9 @@ function updatePreview() {
   if (v.headerPadding) header.style.padding = v.headerPadding;
   if (v.headerMarginBottom) header.style.marginBottom = v.headerMarginBottom;
   if (v.headerFontFamily) header.style.fontFamily = `"${v.headerFontFamily}", sans-serif`;
+  document.getElementById("preview-title").style.fontWeight = v.headerLeftFontWeight || v.headerFontWeight || "";
+  document.querySelector(".preview-header-right").style.fontWeight = v.headerRightFontWeight || v.headerFontWeight || "";
+  document.querySelectorAll(".preview-pill").forEach(el => el.style.fontWeight = v.headerPillFontWeight || v.headerFontWeight || "");
 
   // Cards
   ["preview-card1", "preview-card2"].forEach(id => {

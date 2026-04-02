@@ -42,6 +42,7 @@
 	align-items: center;
 	flex: 1;
 	min-width: 0;
+	font-weight: var(--header-left-font-weight, var(--header-font-weight));
 }
 
 .header-title {
@@ -199,7 +200,7 @@
 	padding: 3px 14px;
 	font-family: var(--header-font-family, "arial");
 	font-size: calc(var(--header-font-size, 18) * 2);
-	font-weight: var(--header-font-weight);
+	font-weight: var(--header-pill-font-weight, var(--header-font-weight));
 	color: var(--header-font-color);
 	font-variant-numeric: tabular-nums;
 }
@@ -221,7 +222,7 @@
 	padding: 3px 14px;
 	font-family: var(--header-font-family, "arial");
 	font-size: calc(var(--header-font-size, 18) * 2);
-	font-weight: var(--header-font-weight);
+	font-weight: var(--header-pill-font-weight, var(--header-font-weight));
 	color: var(--header-font-color);
 	font-variant-numeric: tabular-nums;
 }
@@ -239,7 +240,7 @@
 .clock-time {
 	font-family: var(--header-font-family, "arial");
 	font-size: calc(var(--header-font-size, 18) * 2);
-	font-weight: var(--header-font-weight);
+	font-weight: var(--header-right-font-weight, var(--header-font-weight));
 	color: var(--header-font-color);
 	letter-spacing: 0.04em;
 	font-variant-numeric: tabular-nums;
@@ -256,7 +257,7 @@
 .timer-title {
 	font-family: var(--header-font-family, "arial");
 	font-size: calc(var(--header-font-size, 18) * 2);
-	font-weight: var(--header-font-weight);
+	font-weight: var(--header-right-font-weight, var(--header-font-weight));
 	color: var(--header-font-color);
 	opacity: 0.7;
 }
@@ -269,7 +270,7 @@
 .timer-countdown {
 	font-family: var(--header-font-family, "arial");
 	font-size: calc(var(--header-font-size, 18) * 2);
-	font-weight: 700;
+	font-weight: var(--header-right-font-weight, var(--header-font-weight, 700));
 	color: var(--header-font-color);
 	font-variant-numeric: tabular-nums;
 	letter-spacing: 0.04em;

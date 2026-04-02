@@ -23,7 +23,10 @@ const _styles = {
   headerBackgroundColor: "rgb(61, 48, 105)", // rgba value https://rgbcolorpicker.com/
   headerFontSize: "16px", // px value
   headerFontColor: "#FFFFFF", // hex value
-  headerFontWeight: "normal", // "normal", "lighter", "bold"
+  headerFontWeight: "normal", // "normal", "lighter", "bold" — applies to all header elements unless overridden below
+  headerLeftFontWeight: "", // overrides font-weight for the left side (title). Leave blank to inherit headerFontWeight
+  headerRightFontWeight: "", // overrides font-weight for the right side (clock, timer). Leave blank to inherit headerFontWeight
+  headerPillFontWeight: "", // overrides font-weight for done/pomo pills. Leave blank to inherit headerFontWeight
 
   // Card Styles
   cardGapBetween: "6px", // px value
