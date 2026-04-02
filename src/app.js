@@ -310,7 +310,7 @@ export default class App {
 						template = paused
 							? _adminConfig.responseTo[this.#languageCode].timerPause
 							: _adminConfig.responseTo[this.#languageCode].timerNotRunning;
-						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "pause" })); } catch (e) {}
+						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "pause" })); } catch (e) { }
 						return respondMessage(template, username, responseDetail);
 					}
 
@@ -320,7 +320,7 @@ export default class App {
 						template = resumed
 							? _adminConfig.responseTo[this.#languageCode].timerContinue
 							: _adminConfig.responseTo[this.#languageCode].timerNotPaused;
-						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "continue" })); } catch (e) {}
+						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "continue" })); } catch (e) { }
 						return respondMessage(template, username, responseDetail);
 					}
 
@@ -761,7 +761,7 @@ export default class App {
 	 * @param {string} taskId
 	 * @returns {void}
 	 */
-	
+
 	deleteTaskFromDOM(taskId) {
 		const taskElements = document.querySelectorAll(`[data-task-id="${taskId}"]`);
 		let username = null;
@@ -796,8 +796,23 @@ export default class App {
 		tag.append(nm, ct);
 		shelfTags.appendChild(tag);
 		this.#roster[username] = { tag, countEl: ct, done: 0 };
+
+		this.#updateShelfOverflow(shelfTags);
 	}
 
+	/**
+ * Toggle horizontal-scroll mode on the roster shelf once pills
+ * exceed two rows of height.
+ * @param {HTMLElement} shelfTags
+ */
+	#updateShelfOverflow(shelfTags) {
+		// Only measure in wrap mode
+		shelfTags.classList.remove("overflow");
+		// scrollHeight > clientHeight means the pills wrapped past the CSS max-height
+		if (shelfTags.scrollHeight > shelfTags.clientHeight + 2) {
+			shelfTags.classList.add("overflow");
+		}
+	}
 	/**
 	 * Increment a user's done count on the roster shelf
 	 * @param {string | null} username
@@ -1002,11 +1017,11 @@ function createUserCard({ username, userColor }) {
 /** @type {Record<string, string|null>} */
 const _pronounCache = {};
 const _PRONOUN_MAP = {
-	"aeaer":"ae/aer","eey":"e/ey","faefaer":"fae/faer",
-	"heher":"he/her","hehim":"he/him","heshe":"he/she",
-	"hethem":"he/them","itits":"it/its","other":"other",
-	"sheher":"she/her","shethey":"she/they","theythem":"they/them",
-	"ziehir":"zie/hir","any":"any","ask":"ask","avoid":"avoid/name",
+	"aeaer": "ae/aer", "eey": "e/ey", "faefaer": "fae/faer",
+	"heher": "he/her", "hehim": "he/him", "heshe": "he/she",
+	"hethem": "he/them", "itits": "it/its", "other": "other",
+	"sheher": "she/her", "shethey": "she/they", "theythem": "they/them",
+	"ziehir": "zie/hir", "any": "any", "ask": "ask", "avoid": "avoid/name",
 };
 
 /**
