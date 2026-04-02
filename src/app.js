@@ -119,6 +119,17 @@ export default class App {
 	renderTaskCount() {
 		const doneEl = document.querySelector(".task-count-done");
 		if (doneEl) doneEl.textContent = this.userList.sessionDone.toString();
+		this.renderActiveBadge();
+	}
+
+	renderActiveBadge() {
+		const badge = document.getElementById("active-badge");
+		if (!badge) return;
+		const count = this.userList.getAllUsers()
+			.flatMap(u => u.getTasks())
+			.filter(t => !t.isComplete())
+			.length;
+		badge.textContent = count.toString();
 	}
 
 	renderCycleCount() {

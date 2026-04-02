@@ -285,6 +285,37 @@
 	border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+.section-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 17px;
+	font-weight: 800;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	color: rgba(228, 226, 222, 0.42);
+	margin-bottom: 8px;
+	font-family: var(--card-font-family, "Fredoka", sans-serif);
+}
+
+.count-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 22px;
+	height: 22px;
+	padding: 0 6px;
+	border-radius: 999px;
+	background: rgba(228, 226, 222, 0.12);
+	border: 1px solid rgba(228, 226, 222, 0.2);
+	font-size: 13px;
+	font-weight: 700;
+	color: rgba(228, 226, 222, 0.6);
+	letter-spacing: 0;
+	text-transform: none;
+	font-variant-numeric: tabular-nums;
+}
+
 .shelf-label {
 	font-size: 17px;
 	font-weight: 800;
