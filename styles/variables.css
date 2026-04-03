@@ -41,4 +41,13 @@
 	--task-focus-font-color: #111111;
 	--task-focus-background-color: rgba(255, 255, 255, 0.7);
 	--task-focus-border-radius: 8px;
+
+	/* Spotlight Card (!currenttask / !mytasks) */
+	--spotlight-bg: rgba(100, 100, 100, 0.6);
+	--spotlight-border-color: rgba(130, 136, 224, 0.3);
+	--spotlight-border-radius: 36px;
+	--spotlight-accent-start: #8288e0;
+	--spotlight-accent-end: #b8ccb0;
+	--spotlight-who-color: #8288e0;
+	--spotlight-task-size: 48px;
 }

@@ -489,9 +489,9 @@
 }
 
 .ct-card {
-	background: var(--card-background-color);
-	border: 2px solid rgba(130, 136, 224, 0.3);
-	border-radius: 36px;
+	background: var(--spotlight-bg);
+	border: 2px solid var(--spotlight-border-color);
+	border-radius: var(--spotlight-border-radius);
 	padding: 52px 68px;
 	max-width: 88%;
 	max-height: 82vh;
@@ -506,7 +506,7 @@
 	display: block;
 	height: 3px;
 	border-radius: 3px;
-	background: linear-gradient(90deg, var(--username-color, #8288e0), #b8ccb0);
+	background: linear-gradient(90deg, var(--spotlight-accent-start), var(--spotlight-accent-end));
 	margin-bottom: 30px;
 }
 
@@ -538,7 +538,7 @@
 	font-weight: 800;
 	letter-spacing: .1em;
 	text-transform: uppercase;
-	color: var(--username-color, #8288e0);
+	color: var(--spotlight-who-color);
 	opacity: .75;
 	margin-bottom: 14px;
 }
@@ -552,7 +552,7 @@
 }
 
 .ct-task {
-	font-size: 52px;
+	font-size: var(--spotlight-task-size);
 	color: var(--task-font-color);
 	line-height: 1.3;
 	word-break: break-word;
@@ -571,7 +571,7 @@
 }
 
 .ct-tasks li {
-	font-size: 32px;
+	font-size: var(--spotlight-task-size);
 	color: var(--task-font-color);
 	margin-bottom: 10px;
 	line-height: 1.3;
@@ -579,7 +579,7 @@
 }
 
 .ct-n {
-	color: var(--username-color, #8288e0);
+	color: var(--spotlight-who-color);
 	font-weight: 700;
 }
 

@@ -52,6 +52,15 @@ const _styles = {
   taskFocusBackgroundColor: "rgba(160,168,224,0.45)", // rgba value https://rgbcolorpicker.com/
   taskFocusBorderRadius: "9px", // hex value
 
+  // Spotlight Card (!currenttask / !mytasks)
+  spotlightBg: "rgba(22,24,40,0.95)",               // background of the spotlight card
+  spotlightBorderColor: "rgba(130, 136, 224, 0.3)", // border color
+  spotlightBorderRadius: "36px",                    // corner rounding
+  spotlightAccentStart: "#a0a8e0",                  // gradient bar left color
+  spotlightAccentEnd: "#b8ccb0",                    // gradient bar right color
+  spotlightWhoColor: "#a0a8e0",                     // username + task-number color
+  spotlightTaskSize: "48px",                        // task text size
+
   // ==========================
   // NEW: Broadcaster Focus Overlay Styles
   // ==========================
