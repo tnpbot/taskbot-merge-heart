@@ -220,6 +220,34 @@ export default class UserList {
 	}
 
 	/**
+	 * Mark the user tasks as incomplete (undo a done)
+	 * @param {string} username - The username of the user
+	 * @param {number | number[]} indices - The index of the task(s) to uncomplete
+	 * @throws {Error} User not found
+	 * @returns {Task[]} The tasks that were successfully uncompleted
+	 */
+	uncompleteUserTasks(username, indices) {
+		const user = this.getUser(username);
+		if (!user) {
+			throw new Error(`User ${username} not found`);
+		}
+		const tasks = [].concat(indices).reduce((acc, curr) => {
+			const task = user.getTask(curr);
+			if (!task) return acc;
+			if (task.isComplete()) {
+				task.setCompletionStatus(false);
+				this.tasksCompleted = Math.max(0, this.tasksCompleted - 1);
+				this.sessionDone = Math.max(0, this.sessionDone - 1);
+				acc.push(task);
+			}
+			return acc;
+		}, []);
+		localStorage.setItem(this.#localStoreName + "_sessionDone", String(this.sessionDone));
+		this.#commitToLocalStorage();
+		return tasks;
+	}
+
+	/**
 	 * Delete the user tasks
 	 * @param {string} username - The username of the user
 	 * @param {number | number[]} indices - The index of the task to delete

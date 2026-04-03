@@ -190,6 +190,63 @@ describe("UserList", () => {
 		});
 	});
 
+	describe("uncompleteUserTasks", () => {
+		test("should mark a completed task as incomplete", () => {
+			userList.createUser("user1", { userColor: "#ff0000" });
+			userList.addUserTasks("user1", "Task 1");
+			userList.completeUserTasks("user1", 0);
+			expect(userList.tasksCompleted).toEqual(1);
+			const [task] = userList.uncompleteUserTasks("user1", 0);
+			expect(task.description).toEqual("Task 1");
+			expect(task.isComplete()).toEqual(false);
+			expect(userList.tasksCompleted).toEqual(0);
+			expect(userList.sessionDone).toEqual(0);
+		});
+
+		test("should uncomplete multiple tasks given an array of indices", () => {
+			userList.createUser("user1", { userColor: "#ff0000" });
+			userList.addUserTasks("user1", ["Task 1", "Task 2", "Task 3"]);
+			userList.completeUserTasks("user1", [0, 1, 2]);
+			const tasks = userList.uncompleteUserTasks("user1", [0, 2]);
+			expect(tasks).toHaveLength(2);
+			expect(tasks[0].description).toEqual("Task 1");
+			expect(tasks[1].description).toEqual("Task 3");
+			expect(userList.tasksCompleted).toEqual(1);
+		});
+
+		test("should skip tasks that are not complete", () => {
+			userList.createUser("user1", { userColor: "#ff0000" });
+			userList.addUserTasks("user1", ["Task 1", "Task 2"]);
+			userList.completeUserTasks("user1", 0);
+			const tasks = userList.uncompleteUserTasks("user1", 1);
+			expect(tasks).toHaveLength(0);
+			expect(userList.tasksCompleted).toEqual(1);
+		});
+
+		test("should return empty array for non-existent task index", () => {
+			userList.createUser("user1", { userColor: "#ff0000" });
+			userList.addUserTasks("user1", "Task 1");
+			userList.completeUserTasks("user1", 0);
+			const tasks = userList.uncompleteUserTasks("user1", 5);
+			expect(tasks).toHaveLength(0);
+		});
+
+		test("should throw an error if user does not exist", () => {
+			expect(() =>
+				userList.uncompleteUserTasks("nonExistentUser", 0)
+			).toThrow("User nonExistentUser not found");
+		});
+
+		test("should not let tasksCompleted go below zero", () => {
+			userList.createUser("user1", { userColor: "#ff0000" });
+			userList.addUserTasks("user1", "Task 1");
+			userList.completeUserTasks("user1", 0);
+			userList.tasksCompleted = 0; // force edge case
+			userList.uncompleteUserTasks("user1", 0);
+			expect(userList.tasksCompleted).toEqual(0);
+		});
+	});
+
 	describe("setFocusedTask", () => {
 		test("should set the focused task for the user", () => {
 			userList.createUser("user1", { userColor: "#ff0000" });

@@ -17,6 +17,7 @@ const _userConfig = {
     clearUserDone: ["!clearmydone", "!borrartareashechas", "!effacertâchesfaites", "!完了したタスクをクリア", "!очиститьвыполненныезадачи", "!erledigtesteaufgabenlöschen", "!limpardone"], // new 9/18/2025 tnp
     currentTask: ["!currenttask", "!ct"],
     doneAll: ["!doneall"],
+    undoTask: ["!undo", "!undone"],
   },
   responseTo: {
     EN: {
@@ -37,6 +38,7 @@ const _userConfig = {
       invalidCommand: "Invalid command: {message}. Try !help",
       clearUserDone: "Cleared all your completed tasks!", // NEW: Add this line
       doneAll: "Nice work! Marked all {message} tasks as done!",
+      undoTask: 'No worries! Task(s) {message} marked as in-progress again!',
       currentTask: "@{user} - your current task is: {message}",
       myTasks: "@{user}'s tasks: {message}",
     },

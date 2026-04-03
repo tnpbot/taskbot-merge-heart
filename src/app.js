@@ -541,6 +541,30 @@ export default class App {
 					template = _userConfig.responseTo[this.#languageCode].finishTask;
 				}
 			}
+			else if (_userConfig.commands.undoTask.includes(command)) {
+				// UNDO TASK - mark a completed task as active again
+				const indices = message.split(/[,;]\s*/).reduce((acc, i) => {
+					if (parseTaskIndex(i) >= 0) acc.push(parseTaskIndex(i));
+					return acc;
+				}, []);
+				const tasks = this.userList.uncompleteUserTasks(
+					username,
+					indices
+				);
+				tasks.forEach(({ id }) => {
+					this.uncompleteTaskFromDOM(id);
+				});
+				if (tasks.length === 0) {
+					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
+				}
+				else {
+					responseDetail = tasks
+						.map((task) => `↩️ "${task.description}"`)
+						.join(", ")
+						.replace(/,([^,]*)$/, " &$1");
+					template = _userConfig.responseTo[this.#languageCode].undoTask;
+				}
+			}
 			else if (_userConfig.commands.doneAll.includes(command)) {
 				// COMPLETE ALL TASKS
 				const tasks = this.userList.completeAllUserTasks(username);
@@ -747,6 +771,24 @@ export default class App {
 		}
 		celebrate(username);
 		this.rosterDone(username);
+		this.renderTaskCount();
+		if (username) this.renderUserCount(username);
+	}
+
+	/**
+	 * Uncomplete (undo done) a task in the DOM
+	 * @param {string} taskId
+	 * @returns {void}
+	 */
+	uncompleteTaskFromDOM(taskId) {
+		const taskElements = document.querySelectorAll(
+			`[data-task-id="${taskId}"]`
+		);
+		let username = null;
+		for (const taskElement of taskElements) {
+			taskElement.classList.remove("done");
+			username ??= /** @type {HTMLElement|null} */ (taskElement.closest("[data-user]"))?.dataset.user ?? null;
+		}
 		this.renderTaskCount();
 		if (username) this.renderUserCount(username);
 	}
