@@ -916,9 +916,15 @@ export default class App {
 	showAllTasksFromDOM(username) {
 		const user = this.userList.getUser(username);
 		if (!user) return;
-		const activeTasks = user.tasks.filter(t => !t.isComplete());
+		const activeTasks = user.tasks
+			.map((t, i) => ({ num: i + 1, task: t }))
+			.filter(({ task }) => !task.isComplete());
 		if (!activeTasks.length) return;
-		this.spawnSpotlight(username, "tasks", activeTasks.map(t => t.description));
+		this.spawnSpotlight(
+			username, "tasks",
+			activeTasks.map(({ task }) => task.description),
+			activeTasks.map(({ num }) => num)
+		);
 	}
 
 	/**
@@ -928,7 +934,7 @@ export default class App {
 	 * @param {string[]} tasks
 	 * @returns {void}
 	 */
-	spawnSpotlight(username, label, tasks) {
+	spawnSpotlight(username, label, tasks, numbers = /** @type {number[]|null} */ (null)) {
 		clearTimeout(this.#ctTimer);
 		const overlay = document.getElementById("ct-overlay");
 		if (!overlay) return;
@@ -960,7 +966,7 @@ export default class App {
 				const li = document.createElement("li");
 				const num = document.createElement("span");
 				num.className = "ct-n";
-				num.textContent = `#${i + 1} `;
+				num.textContent = `#${numbers ? numbers[i] : i + 1} `;
 				const tx = document.createElement("span");
 				tx.textContent = t;
 				li.append(num, tx);
