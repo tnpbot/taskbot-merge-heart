@@ -10,13 +10,12 @@ const _userConfig = {
     deleteTask: ["!delete", "!remove", "!clear", "!eliminar", "!supprimer", "!削除", "!видалити", "!löschen", "!deletar"],
     focusTask: ["!focus", "!enfocar", "!concentrer", "!集中", "!фокус", "!fokus", "!focar"],
     unfocusTask: ["!unfocus", "!desenfoque", "!défocaliser", "!集中解除", "!розфокус", "!entfokus", "!desfocar"], // NEW
-    check: ["!check", "!mytask", "!prüfen", "!verificar"],
     myTasks: ["!mytasks", "!backlog"],
     help: ["!taskhelp", "!ayuda", "!aide", "!ヘルプ", "!допомога", "!hilfe", "!ajuda"],
     additional: ["!credit", "!crédito", "!crédit", "!クレジット", "!кредит", "!kontakt", "!credito"],
     // tnp - 10/2025 - allow users to choose when to clear their done tasks
     clearUserDone: ["!clearmydone", "!borrartareashechas", "!effacertâchesfaites", "!完了したタスクをクリア", "!очиститьвыполненныезадачи", "!erledigtesteaufgabenlöschen", "!limpardone"], // new 9/18/2025 tnp
-    currentTask: ["!currenttask", "!ct"],
+    currentTask: ["!currenttask", "!check","!ct"],
     doneAll: ["!doneall"],
   },
   responseTo: {
