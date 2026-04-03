@@ -626,13 +626,13 @@ export default class App {
 				const taskMap = this.userList.checkUserTasks(username);
 				const list = [];
 				for (let [taskNumber, task] of taskMap) {
-					list.push(`📝 ${taskNumber + 1}. ${task.description}`);
+					list.push(`${taskNumber + 1}. ${task.description}`);
 				}
-				responseDetail = list.join(" ");
+				responseDetail = list.join(" | ");
 				if (responseDetail === "") {
 					template = _userConfig.responseTo[this.#languageCode].noTaskFound;
 				} else {
-					template = _userConfig.responseTo[this.#languageCode].check;
+					template = _userConfig.responseTo[this.#languageCode].myTasks;
 				}
 			}
 			else if (_userConfig.commands.help.includes(command)) {

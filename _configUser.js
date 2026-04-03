@@ -38,6 +38,7 @@ const _userConfig = {
       clearUserDone: "Cleared all your completed tasks!", // NEW: Add this line
       doneAll: "Nice work! Marked all {message} tasks as done!",
       currentTask: "@{user} - your current task is: {message}",
+      myTasks: "@{user}'s tasks: {message}",
     },
     ES: {
       addTask: 'Tarea(s) {message} añadida(s)!',
@@ -54,6 +55,7 @@ const _userConfig = {
         "Número máximo de tareas alcanzado, intenta eliminar tareas antiguas.",
       noTaskFound: "Esa tarea no parece existir, ¡intenta añadir una!",
       invalidCommand: "Comando inválido: {message}. Prueba !help",
+      myTasks: "Tareas de @{user}: {message}",
     },
     FR: {
       addTask: 'Tâche(s) {message} ajoutée(s)!',
@@ -71,6 +73,7 @@ const _userConfig = {
       noTaskFound:
         "Cette tâche ne semble pas exister, essayez d'en ajouter une!",
       invalidCommand: "Commande invalide: {message}. Essayez !help",
+      myTasks: "Tâches de @{user}: {message}",
     },
     JP: {
       addTask: 'タスク {message} が追加されました!',
@@ -87,6 +90,7 @@ const _userConfig = {
         "最大タスク数に達しました、古いタスクを削除してみてください。",
       noTaskFound: "そのタスクは存在しないようです、追加してみてください!",
       invalidCommand: "無効なコマンド: {message}。!help を試してみてください",
+      myTasks: "@{user} のタスク: {message}",
     },
     UA: {
       addTask: 'Завдання {message} додано!',
@@ -103,6 +107,7 @@ const _userConfig = {
         "Додано максимальну кількість завдань. Спробуй видалити щось старе.",
       noTaskFound: "Це завдання не існує, спробуй додати нове!",
       invalidCommand: "Неправильна команда: {message}. Переглянь !команди",
+      myTasks: "Завдання @{user}: {message}",
     },
     DE: {
       addTask: 'Aufgabe(n) {message} hinzugefügt!',
@@ -119,6 +124,7 @@ const _userConfig = {
         "Maximale Anzahl an Aufgaben erreicht, versuche alte Aufgaben zu löschen.",
       noTaskFound: "Diese Aufgabe scheint nicht zu existieren, versuche eine hinzuzufügen!",
       invalidCommand: "Ungültiger Befehl: {message}. Versuche !help",
+      myTasks: "Aufgaben von @{user}: {message}",
     },
     PT_BR: {
       addTask: 'Tarefa(s) {message} adicionada(s)!',
@@ -136,6 +142,7 @@ const _userConfig = {
         "Número máximo de tarefas atingido, tente deletar tarefas antigas.",
       noTaskFound: "Essa tarefa não parece existir, tente adicionar uma!",
       invalidCommand: "Comando inválido: {message}. Tente !help",
+      myTasks: "Tarefas de @{user}: {message}",
     }
   },
 };
