@@ -859,12 +859,15 @@ export default class App {
  * @param {HTMLElement} shelfTags
  */
 	#updateShelfOverflow(shelfTags) {
-		// Only measure in wrap mode
-		shelfTags.classList.remove("overflow");
-		// scrollHeight > clientHeight means the pills wrapped past the CSS max-height
-		if (shelfTags.scrollHeight > shelfTags.clientHeight + 2) {
-			shelfTags.classList.add("overflow");
-		}
+		// Defer to next frame so the browser has laid out the new pill first
+		requestAnimationFrame(() => {
+			// Measure in wrap mode — remove overflow so max-height applies
+			shelfTags.classList.remove("overflow");
+			// Reading scrollHeight forces a sync reflow with the current layout
+			if (shelfTags.scrollHeight > shelfTags.clientHeight + 2) {
+				shelfTags.classList.add("overflow");
+			}
+		});
 	}
 	/**
 	 * Increment a user's done count on the roster shelf
