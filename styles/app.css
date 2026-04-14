@@ -63,7 +63,7 @@
 /* ─── Command Hints Strip ───────────────────────────────── */
 
 .hints {
-	display: flex;
+	display: var(--hints-display, flex);
 	flex-shrink: 0;
 	border-top: 1px solid rgba(255, 255, 255, 0.09);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.09);
@@ -87,9 +87,9 @@
 
 .hint-cmd {
 	display: block;
-	font-size: 28px;
+	font-size: calc(var(--hints-cmd-size, 14px) * 2);
 	font-weight: 800;
-	color: var(--username-color, #9db4cc);
+	color: var(--hints-cmd-color, var(--username-color, #9db4cc));
 	letter-spacing: 0.02em;
 	line-height: 1;
 	font-family: var(--card-font-family, "Fredoka", sans-serif);
@@ -99,8 +99,8 @@
 	display: block;
 	font-family: Georgia, serif;
 	font-style: italic;
-	font-size: 22px;
-	color: rgba(228, 226, 222, 0.42);
+	font-size: calc(var(--hints-desc-size, 11px) * 2);
+	color: var(--hints-desc-color, rgba(228, 226, 222, 0.42));
 	line-height: 1;
 }
 
@@ -292,6 +292,7 @@
 /* ─── Roster Shelf  ─────────────────────────────── */
 
 .shelf {
+	display: var(--shelf-display, block);
 	flex-shrink: 0;
 	padding-top: 18px;
 	margin-top: 20px;
@@ -334,7 +335,7 @@
 	font-weight: 800;
 	letter-spacing: .1em;
 	text-transform: uppercase;
-	color: rgba(228, 226, 222, 0.42);
+	color: var(--shelf-label-color, rgba(228, 226, 222, 0.42));
 	margin-bottom: 12px;
 	font-family: var(--card-font-family, "Fredoka", sans-serif);
 }
@@ -374,11 +375,11 @@
 }
 
 .stag {
-	font-size: 21px;
+	font-size: var(--shelf-font-size, 21px);
 	font-weight: 700;
-	color: var(--task-font-color);
-	background: rgba(130, 136, 224, 0.1);
-	border: 1.5px solid rgba(130, 136, 224, 0.2);
+	color: var(--shelf-pill-color, var(--task-font-color));
+	background: var(--shelf-pill-bg, rgba(130, 136, 224, 0.1));
+	border: 1.5px solid var(--shelf-pill-border, rgba(130, 136, 224, 0.2));
 	border-radius: 999px;
 	padding: 5px 18px;
 	display: flex;

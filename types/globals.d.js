@@ -37,6 +37,9 @@
  * @property {string} headerFontSize - The header font size
  * @property {string} headerFontColor - The header font color
  * @property {string} headerFontWeight - The header font weight
+ * @property {string} [headerLeftFontWeight] - Override font weight for header left side
+ * @property {string} [headerRightFontWeight] - Override font weight for header right side
+ * @property {string} [headerPillFontWeight] - Override font weight for header pills
  * @property {string} cardGapBetween - The card gap between
  * @property {string} cardBorderRadius - The card border radius
  * @property {string} cardBackgroundColor - The card background color
@@ -53,6 +56,25 @@
  * @property {string} taskFocusFontColor - The focus task font color
  * @property {string} taskFocusBackgroundColor - The focus task background color
  * @property {string} taskFocusBorderRadius - The focus task border radius
+ * @property {string} [spotlightFontFamily] - Spotlight card font family
+ * @property {string} [spotlightBg] - Spotlight card background
+ * @property {string} [spotlightBorderColor] - Spotlight card border color
+ * @property {string} [spotlightBorderRadius] - Spotlight card border radius
+ * @property {string} [spotlightAccentStart] - Spotlight accent gradient start color
+ * @property {string} [spotlightAccentEnd] - Spotlight accent gradient end color
+ * @property {string} [spotlightWhoColor] - Spotlight username and task-number color
+ * @property {string} [spotlightTaskSize] - Spotlight task text font size
+ * @property {string} [hintsDisplay] - Show/hide the hints strip ("flex" or "none")
+ * @property {string} [hintsCmdColor] - Command text color in hints strip
+ * @property {string} [hintsCmdSize] - Command text font size in hints strip
+ * @property {string} [hintsDescColor] - Description text color in hints strip
+ * @property {string} [hintsDescSize] - Description text font size in hints strip
+ * @property {string} [shelfDisplay] - Show/hide the session tray ("block" or "none")
+ * @property {string} [shelfLabelColor] - Session tray label color
+ * @property {string} [shelfPillColor] - Session tray pill text color
+ * @property {string} [shelfPillBg] - Session tray pill background color
+ * @property {string} [shelfPillBorder] - Session tray pill border color
+ * @property {string} [shelfFontSize] - Session tray pill font size
  */
 
 /**

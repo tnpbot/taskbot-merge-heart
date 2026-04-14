@@ -61,6 +61,21 @@ const _styles = {
   spotlightWhoColor: "#a0a8e0",                     // username + task-number color
   spotlightTaskSize: "48px",                        // task text size
 
+  // Hints / Commands Tray
+  hintsDisplay: "flex",                              // "flex" to show, "none" to hide
+  hintsCmdColor: "#a0a8e0",                          // color of !command text (e.g. !task, !done)
+  hintsCmdSize: "14px",                              // command font size (rendered 2× on overlay)
+  hintsDescColor: "rgba(228,226,222,0.42)",          // color of description text (e.g. "add a task")
+  hintsDescSize: "11px",                             // description font size (rendered 2× on overlay)
+
+  // Session Tray (roster shelf)
+  shelfDisplay: "block",                             // "block" to show, "none" to hide
+  shelfLabelColor: "rgba(228,226,222,0.42)",         // "👥 this session" label color
+  shelfPillColor: "#e2e4f0",                         // pill username text color
+  shelfPillBg: "rgba(130,136,224,0.1)",              // pill background
+  shelfPillBorder: "rgba(130,136,224,0.2)",          // pill border color
+  shelfFontSize: "21px",                             // pill font size
+
   // ==========================
   // NEW: Broadcaster Focus Overlay Styles
   // ==========================

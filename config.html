@@ -664,6 +664,87 @@
       padding: 3px 8px;
       display: inline-block;
     }
+
+    /* hints strip preview */
+    .preview-hints {
+      display: flex;
+      flex-shrink: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 8px 0;
+      margin-bottom: 8px;
+    }
+
+    .preview-hint-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 0 4px;
+      text-align: center;
+    }
+
+    .preview-hint-item + .preview-hint-item {
+      border-left: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .preview-hint-cmd {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: #9db4cc;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .preview-hint-desc {
+      display: block;
+      font-style: italic;
+      font-size: 11px;
+      color: rgba(228, 226, 222, 0.42);
+      line-height: 1;
+    }
+
+    /* session tray preview */
+    .preview-shelf {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .preview-shelf-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(228, 226, 222, 0.42);
+      margin-bottom: 6px;
+    }
+
+    .preview-shelf-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .preview-stag {
+      font-size: 12px;
+      font-weight: 700;
+      color: #e4e2de;
+      background: rgba(130, 136, 224, 0.1);
+      border: 1.5px solid rgba(130, 136, 224, 0.2);
+      border-radius: 999px;
+      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .preview-stag-ct {
+      font-size: 0.85em;
+      color: #b8ccb0;
+    }
   </style>
 </head>
 
@@ -713,6 +794,24 @@
                     class="preview-pill-sep">✓</span></span>
               </div>
             </div>
+            <div class="preview-hints" id="preview-hints">
+              <div class="preview-hint-item">
+                <span class="preview-hint-cmd">!task</span>
+                <span class="preview-hint-desc">add a task</span>
+              </div>
+              <div class="preview-hint-item">
+                <span class="preview-hint-cmd">!done</span>
+                <span class="preview-hint-desc">mark complete</span>
+              </div>
+              <div class="preview-hint-item">
+                <span class="preview-hint-cmd">!edit</span>
+                <span class="preview-hint-desc">edit a task</span>
+              </div>
+              <div class="preview-hint-item">
+                <span class="preview-hint-cmd">!delete</span>
+                <span class="preview-hint-desc">delete</span>
+              </div>
+            </div>
             <div class="preview-card" id="preview-card1">
               <div class="preview-username" id="preview-uname1">streamername</div>
               <div class="preview-task focus" id="preview-task-focus">⭐ current focused task</div>
@@ -722,6 +821,14 @@
             <div class="preview-card" id="preview-card2">
               <div class="preview-username" id="preview-uname2">viewer123</div>
               <div class="preview-task">their task item here</div>
+            </div>
+            <div class="preview-shelf" id="preview-shelf">
+              <div class="preview-shelf-label">👥 this session</div>
+              <div class="preview-shelf-pills">
+                <div class="preview-stag">streamername <span class="preview-stag-ct">3✓</span></div>
+                <div class="preview-stag">viewer123 <span class="preview-stag-ct">1✓</span></div>
+                <div class="preview-stag">anotherUser</div>
+              </div>
             </div>
           </div>
         </div>
@@ -878,6 +985,19 @@
       { group: "Spotlight", label: "Accent end", key: "spotlightAccentEnd", type: "color" },
       { group: "Spotlight", label: "Username color", key: "spotlightWhoColor", type: "color" },
       { group: "Spotlight", label: "Task text size (px)", key: "spotlightTaskSize", type: "px", min: 12, max: 80 },
+      // Hints strip
+      { group: "Hints", label: "Show hints strip", key: "hintsDisplay", type: "select", options: ["flex", "none"] },
+      { group: "Hints", label: "Command color", key: "hintsCmdColor", type: "color" },
+      { group: "Hints", label: "Command size (px)", key: "hintsCmdSize", type: "px", min: 6, max: 20 },
+      { group: "Hints", label: "Description color", key: "hintsDescColor", type: "color" },
+      { group: "Hints", label: "Description size (px)", key: "hintsDescSize", type: "px", min: 5, max: 16 },
+      // Session tray
+      { group: "Session Tray", label: "Show tray", key: "shelfDisplay", type: "select", options: ["block", "none"] },
+      { group: "Session Tray", label: "Label color", key: "shelfLabelColor", type: "color" },
+      { group: "Session Tray", label: "Pill text color", key: "shelfPillColor", type: "color" },
+      { group: "Session Tray", label: "Pill background", key: "shelfPillBg", type: "color" },
+      { group: "Session Tray", label: "Pill border color", key: "shelfPillBorder", type: "color" },
+      { group: "Session Tray", label: "Pill font size (px)", key: "shelfFontSize", type: "px", min: 10, max: 40 },
     ];
 
     // ── browser capability ────────────────────────────────────────────────────
