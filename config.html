@@ -984,19 +984,24 @@
       { group: "Spotlight", label: "Accent start", key: "spotlightAccentStart", type: "color" },
       { group: "Spotlight", label: "Accent end", key: "spotlightAccentEnd", type: "color" },
       { group: "Spotlight", label: "Username color", key: "spotlightWhoColor", type: "color" },
+      { group: "Spotlight", label: "Username size (px)", key: "spotlightWhoSize", type: "px", min: 10, max: 48 },
       { group: "Spotlight", label: "Task text size (px)", key: "spotlightTaskSize", type: "px", min: 12, max: 80 },
+      { group: "Spotlight", label: "Task text color", key: "spotlightTaskColor", type: "color" },
       // Hints strip
       { group: "Hints", label: "Show hints strip", key: "hintsDisplay", type: "select", options: ["flex", "none"] },
       { group: "Hints", label: "Command color", key: "hintsCmdColor", type: "color" },
       { group: "Hints", label: "Command size (px)", key: "hintsCmdSize", type: "px", min: 6, max: 20 },
+      { group: "Hints", label: "Command font weight", key: "hintsCmdFontWeight", type: "select", options: ["normal", "bold", "lighter", "400", "600", "700", "800", "900"] },
       { group: "Hints", label: "Description color", key: "hintsDescColor", type: "color" },
       { group: "Hints", label: "Description size (px)", key: "hintsDescSize", type: "px", min: 5, max: 16 },
       // Session tray
       { group: "Session Tray", label: "Show tray", key: "shelfDisplay", type: "select", options: ["block", "none"] },
       { group: "Session Tray", label: "Label color", key: "shelfLabelColor", type: "color" },
+      { group: "Session Tray", label: "Label size (px)", key: "shelfLabelSize", type: "px", min: 8, max: 30 },
       { group: "Session Tray", label: "Pill text color", key: "shelfPillColor", type: "color" },
       { group: "Session Tray", label: "Pill background", key: "shelfPillBg", type: "color" },
       { group: "Session Tray", label: "Pill border color", key: "shelfPillBorder", type: "color" },
+      { group: "Session Tray", label: "Pill font weight", key: "shelfPillFontWeight", type: "select", options: ["normal", "bold", "lighter", "400", "600", "700", "800", "900"] },
       { group: "Session Tray", label: "Pill font size (px)", key: "shelfFontSize", type: "px", min: 10, max: 40 },
     ];
 
@@ -1585,6 +1590,39 @@
       if (v.taskDoneFontStyle) taskDone.style.fontStyle = v.taskDoneFontStyle;
       if (v.taskDoneTextDecoration) taskDone.style.textDecoration = v.taskDoneTextDecoration;
 
+      // Hints strip
+      const previewHints = document.getElementById("preview-hints");
+      if (previewHints) {
+        previewHints.style.display = v.hintsDisplay === "none" ? "none" : "flex";
+        previewHints.querySelectorAll(".preview-hint-cmd").forEach(el => {
+          el.style.color = v.hintsCmdColor || "";
+          if (v.hintsCmdSize) el.style.fontSize = v.hintsCmdSize;
+          if (v.hintsCmdFontWeight) el.style.fontWeight = v.hintsCmdFontWeight;
+        });
+        previewHints.querySelectorAll(".preview-hint-desc").forEach(el => {
+          el.style.color = v.hintsDescColor || "";
+          if (v.hintsDescSize) el.style.fontSize = v.hintsDescSize;
+        });
+      }
+
+      // Session tray
+      const previewShelf = document.getElementById("preview-shelf");
+      if (previewShelf) {
+        previewShelf.style.display = v.shelfDisplay === "none" ? "none" : "";
+        const label = previewShelf.querySelector(".preview-shelf-label");
+        if (label) {
+          label.style.color = v.shelfLabelColor || "";
+          if (v.shelfLabelSize) label.style.fontSize = v.shelfLabelSize;
+        }
+        previewShelf.querySelectorAll(".preview-stag").forEach(el => {
+          el.style.color = v.shelfPillColor || "";
+          el.style.background = v.shelfPillBg || "";
+          el.style.borderColor = v.shelfPillBorder || "";
+          if (v.shelfFontSize) el.style.fontSize = v.shelfFontSize;
+          if (v.shelfPillFontWeight) el.style.fontWeight = v.shelfPillFontWeight;
+        });
+      }
+
       updateSpotlightPreview();
     }
 
@@ -1603,14 +1641,17 @@
         `linear-gradient(90deg, ${v.spotlightAccentStart || "#a0a8e0"}, ${v.spotlightAccentEnd || "#b8ccb0"})`;
 
       const who = document.getElementById("preview-ct-who");
-      if (who) who.style.color = v.spotlightWhoColor || "#a0a8e0";
+      if (who) {
+        who.style.color = v.spotlightWhoColor || "#a0a8e0";
+        if (v.spotlightWhoSize) who.style.fontSize = v.spotlightWhoSize;
+      }
 
       document.querySelectorAll(".preview-ct-n").forEach(el => {
         el.style.color = v.spotlightWhoColor || "#a0a8e0";
       });
       document.querySelectorAll(".preview-ct-task-text").forEach(el => {
         if (v.spotlightTaskSize) el.style.fontSize = v.spotlightTaskSize;
-        el.style.color = v.taskFontColor || "";
+        el.style.color = v.spotlightTaskColor || v.taskFontColor || "";
       });
     }
 

@@ -64,17 +64,22 @@
  * @property {string} [spotlightAccentStart] - Spotlight accent gradient start color
  * @property {string} [spotlightAccentEnd] - Spotlight accent gradient end color
  * @property {string} [spotlightWhoColor] - Spotlight username and task-number color
+ * @property {string} [spotlightWhoSize] - Spotlight username font size
  * @property {string} [spotlightTaskSize] - Spotlight task text font size
+ * @property {string} [spotlightTaskColor] - Spotlight task text color (falls back to taskFontColor)
  * @property {string} [hintsDisplay] - Show/hide the hints strip ("flex" or "none")
  * @property {string} [hintsCmdColor] - Command text color in hints strip
  * @property {string} [hintsCmdSize] - Command text font size in hints strip
+ * @property {string} [hintsCmdFontWeight] - Command text font weight in hints strip
  * @property {string} [hintsDescColor] - Description text color in hints strip
  * @property {string} [hintsDescSize] - Description text font size in hints strip
  * @property {string} [shelfDisplay] - Show/hide the session tray ("block" or "none")
  * @property {string} [shelfLabelColor] - Session tray label color
+ * @property {string} [shelfLabelSize] - Session tray label font size
  * @property {string} [shelfPillColor] - Session tray pill text color
  * @property {string} [shelfPillBg] - Session tray pill background color
  * @property {string} [shelfPillBorder] - Session tray pill border color
+ * @property {string} [shelfPillFontWeight] - Session tray pill font weight
  * @property {string} [shelfFontSize] - Session tray pill font size
  */
 

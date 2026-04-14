@@ -59,21 +59,26 @@ const _styles = {
   spotlightAccentStart: "#a0a8e0",                  // gradient bar left color
   spotlightAccentEnd: "#b8ccb0",                    // gradient bar right color
   spotlightWhoColor: "#a0a8e0",                     // username + task-number color
+  spotlightWhoSize: "21px",                         // username font size
   spotlightTaskSize: "48px",                        // task text size
+  spotlightTaskColor: "",                           // task text color (leave blank to use taskFontColor)
 
   // Hints / Commands Tray
   hintsDisplay: "flex",                              // "flex" to show, "none" to hide
   hintsCmdColor: "#a0a8e0",                          // color of !command text (e.g. !task, !done)
   hintsCmdSize: "14px",                              // command font size (rendered 2× on overlay)
+  hintsCmdFontWeight: "800",                         // "normal", "bold", "lighter", or numeric (100–900)
   hintsDescColor: "rgba(228,226,222,0.42)",          // color of description text (e.g. "add a task")
   hintsDescSize: "11px",                             // description font size (rendered 2× on overlay)
 
   // Session Tray (roster shelf)
   shelfDisplay: "block",                             // "block" to show, "none" to hide
   shelfLabelColor: "rgba(228,226,222,0.42)",         // "👥 this session" label color
+  shelfLabelSize: "17px",                            // "👥 this session" label font size
   shelfPillColor: "#e2e4f0",                         // pill username text color
-  shelfPillBg: "#4c4f7b",              // pill background
-  shelfPillBorder: "#df81a2",          // pill border color
+  shelfPillBg: "#4c4f7b",                            // pill background
+  shelfPillBorder: "#df81a2",                        // pill border color
+  shelfPillFontWeight: "700",                        // pill font weight: "normal", "bold", "lighter", or numeric
   shelfFontSize: "30px",                             // pill font size
 
   // ==========================

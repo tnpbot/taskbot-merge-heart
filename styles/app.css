@@ -88,7 +88,7 @@
 .hint-cmd {
 	display: block;
 	font-size: calc(var(--hints-cmd-size, 14px) * 2);
-	font-weight: 800;
+	font-weight: var(--hints-cmd-font-weight, 800);
 	color: var(--hints-cmd-color, var(--username-color, #9db4cc));
 	letter-spacing: 0.02em;
 	line-height: 1;
@@ -331,7 +331,7 @@
 }
 
 .shelf-label {
-	font-size: 17px;
+	font-size: var(--shelf-label-size, 17px);
 	font-weight: 800;
 	letter-spacing: .1em;
 	text-transform: uppercase;
@@ -376,7 +376,7 @@
 
 .stag {
 	font-size: var(--shelf-font-size, 21px);
-	font-weight: 700;
+	font-weight: var(--shelf-pill-font-weight, 700);
 	color: var(--shelf-pill-color, var(--task-font-color));
 	background: var(--shelf-pill-bg, rgba(130, 136, 224, 0.1));
 	border: 1.5px solid var(--shelf-pill-border, rgba(130, 136, 224, 0.2));
@@ -535,7 +535,7 @@
 }
 
 .ct-who {
-	font-size: 21px;
+	font-size: var(--spotlight-who-size, 21px);
 	font-weight: 800;
 	letter-spacing: .1em;
 	text-transform: uppercase;
@@ -554,7 +554,7 @@
 
 .ct-task {
 	font-size: var(--spotlight-task-size);
-	color: var(--task-font-color);
+	color: var(--spotlight-task-color, var(--task-font-color));
 	line-height: 1.3;
 	word-break: break-word;
 }
@@ -573,7 +573,7 @@
 
 .ct-tasks li {
 	font-size: var(--spotlight-task-size);
-	color: var(--task-font-color);
+	color: var(--spotlight-task-color, var(--task-font-color));
 	margin-bottom: 10px;
 	line-height: 1.3;
 	word-break: break-word;
