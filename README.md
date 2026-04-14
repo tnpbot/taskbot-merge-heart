@@ -44,6 +44,7 @@ Viewers can create, edit, mark as done, and delete tasks from the list. This Tas
   - [Setup in OBS](#setup-in-obs)
 - [Customization settings](#customization-settings)
   - [App Behavior Settings](#behavior-settings)
+  - [Hiding UI Sections](#hiding-ui-sections)
   - [Styles Settings](#styles-settings)
     - [Style Config Tool](#style-config-tool)
 - [Commands](#commands)
@@ -181,12 +182,57 @@ The prefix the bot uses to respond to users in chat.
 - **"12"**: 12-hour format (e.g. 3:45 PM)
 - **"24"**: 24-hour format (e.g. 15:45)
 
+`hints`: Default = **6 items (see below)**
+
+- **array**: The list of command shortcuts shown in the command hints strip on the overlay. Each item has a `cmd` (the command text) and a `desc` (the short description beneath it).
+- To **change** a hint, edit the `cmd` or `desc` value for that item.
+- To **reorder** hints, move the items within the array.
+- To **add** a hint, add a new `{ cmd: "!mycommand", desc: "my description" }` entry.
+- To **remove a specific hint**, delete that item from the array.
+- To **hide the strip entirely**, set `hints: []` (empty array) — or use the Style Config Tool to set **Show hints strip** to `none`.
+
+```js
+hints: [
+  { cmd: "!task",        desc: "add a task" },
+  { cmd: "!done",        desc: "mark complete" },
+  { cmd: "!doneall",     desc: "finish all" },
+  { cmd: "!delete",      desc: "delete a task" },
+  { cmd: "!currenttask", desc: "spotlight it" },
+  { cmd: "!edit",        desc: "edit a task" },
+],
+```
+
 `testMode`: Default = **false**
 
 - **false**: turn OFF test mode.
 - **true**: turn ON test mode.
 
 Use this to test the TaskList without affecting the real task list and visually see the style changes you make. When test mode is OFF, the TaskList will work as normal and remove any test tasks.
+
+### Hiding UI Sections
+
+Each of the three optional UI sections — the **timer**, the **command hints strip**, and the **session tray** — can be disabled independently.
+
+#### Timer
+
+The timer lives inside the header and is triggered by the `!timer` mod command.
+
+- **Disable the `!timer` command** (timer never appears): set `showTimer: false` in `_settings.js`.
+- **Hide the entire header** (title, clock, and timer): use the Style Config Tool → Header → **Show header** → `none`, or set `headerDisplay: "none"` in `_styles.js`.
+
+#### Command Hints Strip
+
+The strip of command shortcuts shown below the header.
+
+- **Change or remove individual hints**: edit the `hints` array in `_settings.js` (see [`hints` setting](#hints-setting) above).
+- **Hide the strip** while keeping its layout space: use the Style Config Tool → Hints → **Show hints strip** → `none`.
+- **Remove the strip entirely** (no space taken): set `hints: []` in `_settings.js`.
+
+#### Session Tray ("This Session")
+
+The pill row at the bottom that shows which viewers have completed tasks this session.
+
+- **Hide the tray**: use the Style Config Tool → Session Tray → **Show tray** → `none`, or set `shelfDisplay: "none"` in `_styles.js`.
 
 ### Styles Settings
 
@@ -281,6 +327,11 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 - `!doneall` - Mark all of your tasks as done
 
   - example: `!doneall`
+
+- `!undo` - Mark task(s) as in-progress again (multiple tasks must be separated by a comma)
+
+  - example: `!undo 1`
+  - example: `!undo 2, 3`
 
 - `!delete` - Delete task(s) (multiple tasks must be separated by a comma or use `all` to delete all tasks)
 
@@ -399,6 +450,11 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 - `!готово` (Ukrainian)
 - `!erledigt` (German)
 - `!concluir` (Brazilian Portuguese)
+
+**undo complete commands:**
+
+- `!undo`
+- `!undone`
 
 **delete task commands:**
 
