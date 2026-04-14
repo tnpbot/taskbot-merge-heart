@@ -13,16 +13,16 @@ const _styles = {
   appBorderRadius: "20px", // px value
   appPadding: "10px", // px value
   appBackgroundImage: "url(../images/transparent-image.png)", // image must go in images folder
-  appBackgroundColor: "rgba(18,20,32,0.96)", // rgba value https://rgbcolorpicker.com
+  appBackgroundColor: "rgba(22,22,24,0.94)", // rgba value https://rgbcolorpicker.com
 
   //  Header Styles
   headerDisplay: "flex", // "none" to hide header or "flex" to show header
   headerBorderRadius: "15px", // px value
   headerMarginBottom: "6px", // px value
   headerPadding: "12px", // px value
-  headerBackgroundColor: "#1a1c2e", // rgba value https://rgbcolorpicker.com/
+  headerBackgroundColor: "#1e1e21", // rgba value https://rgbcolorpicker.com/
   headerFontSize: "18px", // px value
-  headerFontColor: "#e2e4f0", // hex value
+  headerFontColor: "#e4e2de", // hex value
   headerFontWeight: "normal", // "normal", "lighter", "bold" — applies to all header elements unless overridden below
   headerLeftFontWeight: "bold", // overrides font-weight for the left side (title). Leave blank to inherit headerFontWeight
   headerRightFontWeight: "", // overrides font-weight for the right side (clock, timer). Leave blank to inherit headerFontWeight
@@ -32,24 +32,24 @@ const _styles = {
   cardGapBetween: "8px", // px value
   cardBorderRadius: "0px", // px value
   cardPadding: "15px", // px value
-  cardBackgroundColor: "rgba(22,24,40,0.95)", // rgba value https://rgbcolorpicker.com/
+  cardBackgroundColor: "rgba(22,22,24,0.94)", // rgba value https://rgbcolorpicker.com/
 
   // Username Styles
   usernameFontSize: "14px", // px value
-  usernameColor: "#a0a8e0", // hex value
+  usernameColor: "#9db4cc", // hex value
   usernameFontWeight: "normal", // "normal", "lighter", "bold"
 
   // Task Styles
   taskFontSize: "12px", // px value
-  taskFontColor: "#e2e4f0", // hex value
+  taskFontColor: "#e4e2de", // hex value
   taskFontWeight: "normal", // "normal", "lighter", "bold"
 
-  taskDoneFontColor: "rgba(226,228,240,0.38)", // hex value
+  taskDoneFontColor: "rgba(228,226,222,0.42)", // hex value
   taskDoneFontStyle: "italic", // "italic" or "normal"
   taskDoneTextDecoration: "line-through", // "line-through" or "none"
 
-  taskFocusFontColor: "#e2e4f0", // hex value
-  taskFocusBackgroundColor: "rgba(160,168,224,0.45)", // rgba value https://rgbcolorpicker.com/
+  taskFocusFontColor: "#e4e2de", // hex value
+  taskFocusBackgroundColor: "rgba(157,180,204,0.45)", // rgba value https://rgbcolorpicker.com/
   taskFocusBorderRadius: "9px", // hex value
 
   // Spotlight Card (!currenttask / !mytasks)
