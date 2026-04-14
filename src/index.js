@@ -15,6 +15,16 @@ const client = new TwitchChat(twitchIRC, {
 });
 
 window.addEventListener("load", () => {
+	const hintsStrip = document.getElementById("hints-strip");
+	if (hintsStrip && Array.isArray(_settings.hints)) {
+		_settings.hints.forEach(({ cmd, desc }) => {
+			const item = document.createElement("div");
+			item.className = "hint-item";
+			item.innerHTML = `<span class="hint-cmd">${cmd}</span><span class="hint-desc">${desc}</span>`;
+			hintsStrip.appendChild(item);
+		});
+	}
+
 	let storeName = "userList";
 	if (_settings.testMode) {
 		console.log("Test mode enabled");

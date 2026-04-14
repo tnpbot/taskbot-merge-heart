@@ -17,4 +17,12 @@ const _settings = {
   focusSessionEndMessage: "🎉 Focus session complete! If needed, take a break to get some movement in and hydrate! ☕",
   clockTimezone: "America/New_York", // IANA timezone string, e.g. "America/New_York", "Europe/London", "Asia/Tokyo"
   clockFormat: "24", // "12" for 12-hour (3:45 PM) or "24" for 24-hour (15:45)
+  hints: [
+    { cmd: "!task",        desc: "add a task" },
+    { cmd: "!done",        desc: "mark complete" },
+    { cmd: "!doneall",     desc: "finish all" },
+    { cmd: "!delete",      desc: "delete a task" },
+    { cmd: "!currenttask", desc: "spotlight it" },
+    { cmd: "!edit",        desc: "edit a task" },
+  ],
 };

@@ -72,9 +72,9 @@ const _styles = {
   shelfDisplay: "block",                             // "block" to show, "none" to hide
   shelfLabelColor: "rgba(228,226,222,0.42)",         // "👥 this session" label color
   shelfPillColor: "#e2e4f0",                         // pill username text color
-  shelfPillBg: "rgba(130,136,224,0.1)",              // pill background
-  shelfPillBorder: "rgba(130,136,224,0.2)",          // pill border color
-  shelfFontSize: "21px",                             // pill font size
+  shelfPillBg: "#4c4f7b",              // pill background
+  shelfPillBorder: "#df81a2",          // pill border color
+  shelfFontSize: "30px",                             // pill font size
 
   // ==========================
   // NEW: Broadcaster Focus Overlay Styles
