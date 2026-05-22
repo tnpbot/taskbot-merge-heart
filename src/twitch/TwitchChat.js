@@ -177,7 +177,7 @@ function convertToCommandFormat(message) {
 		message: message.command.botCommandParams || "",
 		flags: {
 			broadcaster: !!message.tags.badges?.broadcaster,
-			mod: !!message.tags.badges?.moderator,
+			mod: !!(message.tags.badges?.moderator || message.tags.badges?.lead_moderator),
 		},
 		extra: {
 			userColor: message.tags.color,
