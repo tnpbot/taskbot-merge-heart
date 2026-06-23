@@ -93,11 +93,15 @@ export default class TwitchChat extends EventEmitter {
 							this.#ws.close();
 							break;
 						case "NOTICE":
-							// If the authentication failed, leave the channel.
-							// The server will close the connection.
-							console.error(`${parsedMessage.parameters}; left ${this.channel}`);
-							this.emit("oauthError");
-							this.#ws.send(`PART ${this.channel}`);
+							console.log(`[NOTICE] ${parsedMessage.parameters}`);
+							if (
+								parsedMessage.parameters === "Login authentication failed" ||
+								parsedMessage.parameters === "Improperly formatted auth"
+							) {
+								console.error(`Auth failure: ${parsedMessage.parameters}; leaving ${this.channel}`);
+								this.emit("oauthError");
+								this.#ws.send(`PART ${this.channel}`);
+							}
 							break;
 						default: // Ignore all other IRC messages.
 					}
