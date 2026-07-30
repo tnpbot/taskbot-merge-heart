@@ -17,6 +17,7 @@ export default class App {
 	#timerIntervalId = null;
 	#timerPaused = false;
 	#timerResumeFn = null;
+	#timerAdjustFn = null;
 	#ctTimer = null;
 	#roster = {};
 	#languageCode;
@@ -154,6 +155,7 @@ export default class App {
 		this.#timerIntervalId && clearInterval(this.#timerIntervalId);
 		this.#timerPaused = false;
 		this.#timerResumeFn = null;
+		this.#timerAdjustFn = null;
 		const timerEl = document.querySelector(".timer");
 		const titleEl = document.querySelector(".header-title");
 		/** @type {HTMLElement} */
@@ -194,10 +196,19 @@ export default class App {
 			this.#timerPaused = false;
 		};
 
-		const updateTimer = () => {
+		const renderTimerDisplay = () => {
 			const minutes = Math.floor(timer / 60).toString().padStart(2, "0");
 			const seconds = (timer % 60).toString().padStart(2, "0");
 			timerElement.textContent = `${minutes}:${seconds}`;
+		};
+
+		this.#timerAdjustFn = (deltaSeconds) => {
+			timer = Math.max(0, timer + deltaSeconds);
+			renderTimerDisplay();
+		};
+
+		const updateTimer = () => {
+			renderTimerDisplay();
 
 			if (timer === 0) {
 				if (isInFocus) {
@@ -223,6 +234,7 @@ export default class App {
 						clearInterval(this.#timerIntervalId);
 						this.#timerPaused = false;
 						this.#timerResumeFn = null;
+						this.#timerAdjustFn = null;
 						breakEndAudioEl.play();
 						timerEl.classList.add("hidden");
 						if (titleEl) titleEl.classList.remove("hidden");
@@ -258,6 +270,28 @@ export default class App {
 	resumeTimer() {
 		if (!this.#timerPaused || !this.#timerResumeFn) return false;
 		this.#timerResumeFn();
+		return true;
+	}
+
+	/**
+	 * Add minutes to the running/paused timer. Returns false if no timer is active.
+	 * @param {number} minutes
+	 * @returns {boolean}
+	 */
+	addTime(minutes) {
+		if (!this.#timerAdjustFn) return false;
+		this.#timerAdjustFn(minutes * 60);
+		return true;
+	}
+
+	/**
+	 * Subtract minutes from the running/paused timer, clamped at 0. Returns false if no timer is active.
+	 * @param {number} minutes
+	 * @returns {boolean}
+	 */
+	subtractTime(minutes) {
+		if (!this.#timerAdjustFn) return false;
+		this.#timerAdjustFn(-minutes * 60);
 		return true;
 	}
 
@@ -332,6 +366,20 @@ export default class App {
 							? _adminConfig.responseTo[this.#languageCode].timerContinue
 							: _adminConfig.responseTo[this.#languageCode].timerNotPaused;
 						try { localStorage.setItem("timerCommand", JSON.stringify({ action: "continue" })); } catch (e) { }
+						return respondMessage(template, username, responseDetail);
+					}
+
+					// Handle +/- time adjustment
+					const adjustMatch = lowerMessage.match(/^([+-])\s*(\d+)$/);
+					if (adjustMatch) {
+						const sign = adjustMatch[1];
+						const minutes = parseInt(adjustMatch[2], 10);
+						const adjusted = sign === "+" ? this.addTime(minutes) : this.subtractTime(minutes);
+						template = adjusted
+							? _adminConfig.responseTo[this.#languageCode][sign === "+" ? "timerAdd" : "timerSubtract"]
+							: _adminConfig.responseTo[this.#languageCode].timerNotRunning;
+						responseDetail = String(minutes);
+						try { localStorage.setItem("timerCommand", JSON.stringify({ action: sign === "+" ? "add" : "subtract", minutes })); } catch (e) { }
 						return respondMessage(template, username, responseDetail);
 					}
 

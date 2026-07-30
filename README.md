@@ -379,6 +379,14 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 
   - example: `!timer continue`
 
+- `!timer +10` - Add minutes to the running or paused timer
+
+  - example: `!timer +10`
+
+- `!timer -10` - Subtract minutes from the running or paused timer (clamped at 0, won't go negative)
+
+  - example: `!timer -10`
+
 - `!clearlist` - Clear all tasks from the list
 
   - example: `!clearlist`
