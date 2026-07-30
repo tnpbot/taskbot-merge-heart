@@ -9,7 +9,7 @@ const _settings = {
   pauseAtTop: 100, // milliseconds to pause at top (2 seconds)
   showUsernameColor: true, // true or false
   headerTitle: "coworking session", // text shown on the left side of the header
-  showTimer: true, // true = mods can use !timer command; false = timer disabled
+  showTimer: true, // true = the !timer feature is enabled (mods can start/control it); false = the timer feature is disabled entirely (command ignored, timer never shown)
   botResponsePrefix: "🤖💬 ", // default bot message prefix
   testMode: false, // true or false - for testing purposes
   allowSharedChatCommands: false, // true = process commands relayed in from other channels via Twitch Shared Chat; false (default) = ignore them. Mods can also flip this live with !sharedchat on/off, which persists across reloads and overrides this default.

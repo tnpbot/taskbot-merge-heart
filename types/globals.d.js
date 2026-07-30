@@ -13,7 +13,7 @@
  * @property {number} pauseAtTop - Milliseconds to pause at top
  * @property {boolean} showUsernameColor - Whether to show username color
  * @property {string} headerTitle - Text shown on the left side of the header
- * @property {boolean} showTimer - Whether the !timer command is enabled
+ * @property {boolean} showTimer - Whether the !timer feature is enabled at all (not a mod-permission toggle — !timer is always mod-only)
  * @property {string} botResponsePrefix - The bot response prefix
  * @property {boolean} testMode - Whether test mode is enabled
  * @property {boolean} allowSharedChatCommands - Whether commands relayed from other channels via Twitch Shared Chat are processed (default false ignores them)
