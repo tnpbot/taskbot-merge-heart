@@ -16,6 +16,7 @@
  * @property {boolean} showTimer - Whether the !timer command is enabled
  * @property {string} botResponsePrefix - The bot response prefix
  * @property {boolean} testMode - Whether test mode is enabled
+ * @property {boolean} allowSharedChatCommands - Whether commands relayed from other channels via Twitch Shared Chat are processed (default false ignores them)
  * @property {string} focusSessionEndMessage - Custom message when focus session ends and break starts
  * @property {string} clockTimezone - IANA timezone string for the live clock
  * @property {string} clockFormat - "12" or "24" hour clock format

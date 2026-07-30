@@ -26,6 +26,7 @@ export default class App {
 	#showTimer;
 	#sessionCycles;
 	#storeName;
+	#allowSharedChatCommands;
 
 	/**
 	 * @constructor
@@ -39,6 +40,12 @@ export default class App {
 		this.#headerTitle = _settings.headerTitle || "";
 		this.#showTimer = !!_settings.showTimer;
 		this.#storeName = storeName;
+		// A mod may have toggled this live via !sharedchat on/off; that override
+		// persists across reloads and takes precedence over the _settings.js default.
+		const storedAllowSharedChat = localStorage.getItem(storeName + "_allowSharedChatCommands");
+		this.#allowSharedChatCommands = storedAllowSharedChat !== null
+			? storedAllowSharedChat === "true"
+			: !!_settings.allowSharedChatCommands;
 		this.#sessionCycles = parseInt(localStorage.getItem(storeName + "_sessionCycles") || "0", 10);
 	}
 
@@ -332,10 +339,16 @@ export default class App {
 	 * @param {string} command
 	 * @param {string} message
 	 * @param {{broadcaster: boolean, mod: boolean}} flags
-	 * @param {{userColor: string, messageId: string}} extra
+	 * @param {{userColor: string, messageId: string, isSharedChat?: boolean}} extra
 	 * @returns {{error: boolean, message: string}} - Response message
 	 */
 	chatHandler(username, command, message, flags, extra) {
+		// Ignore commands relayed in from another channel via Twitch Shared Chat,
+		// unless the streamer has explicitly opted into cross-channel commands.
+		if (extra?.isSharedChat && !this.#allowSharedChatCommands) {
+			return { error: false, message: "" };
+		}
+
 		command = `!${command.toLowerCase()}`;
 		let template = "";
 		let responseDetail = "";
@@ -480,6 +493,22 @@ export default class App {
 					template = _adminConfig.responseTo[this.#languageCode].clearOld;
 					return respondMessage(template, username, responseDetail);
 				}
+				else if (_adminConfig.commands.sharedChat.includes(command)) {
+					const arg = message.toLowerCase().trim();
+					if (arg === "on" || arg === "enable") {
+						this.#allowSharedChatCommands = true;
+						try { localStorage.setItem(this.#storeName + "_allowSharedChatCommands", "true"); } catch (e) { }
+						template = _adminConfig.responseTo[this.#languageCode].sharedChatOn;
+						return respondMessage(template, username, responseDetail);
+					}
+					if (arg === "off" || arg === "disable") {
+						this.#allowSharedChatCommands = false;
+						try { localStorage.setItem(this.#storeName + "_allowSharedChatCommands", "false"); } catch (e) { }
+						template = _adminConfig.responseTo[this.#languageCode].sharedChatOff;
+						return respondMessage(template, username, responseDetail);
+					}
+					throw new Error("Usage: !sharedchat on | off");
+				}
 			}
 			// ADD: Handle when non-mods try to use admin commands
 			if (
@@ -488,7 +517,8 @@ export default class App {
 					_adminConfig.commands.clearList.includes(command) ||
 					_adminConfig.commands.clearDone.includes(command) ||
 					_adminConfig.commands.clearUser.includes(command) ||
-					_adminConfig.commands.clearOld.includes(command) // New 9/11/2025 - tnp
+					_adminConfig.commands.clearOld.includes(command) || // New 9/11/2025 - tnp
+					_adminConfig.commands.sharedChat.includes(command)
 				)
 			) {
 				template = _userConfig.responseTo[this.#languageCode].invalidCommand;

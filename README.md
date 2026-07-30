@@ -209,6 +209,13 @@ hints: [
 
 Use this to test the TaskList without affecting the real task list and visually see the style changes you make. When test mode is OFF, the TaskList will work as normal and remove any test tasks.
 
+`allowSharedChatCommands`: Default = **false**
+
+- **false**: Commands relayed in from another channel via [Twitch Shared Chat](https://help.twitch.tv/s/article/shared-chat) are silently ignored — nothing is added to the task list and the bot doesn't reply. This is the default because Shared Chat mixes viewers (and their bots) from multiple channels into one chat, and other streamers running their own taskbot on the same common commands (`!task`, `!done`, `!delete`, `!edit`, etc.) would otherwise double-process each other's commands.
+- **true**: Commands from Shared Chat are processed exactly like commands from your own channel. Only enable this if you intentionally want cross-channel command handling (e.g. co-streaming and sharing one task list).
+
+Mods and the broadcaster can also flip this live from chat without editing `_settings.js` or reloading the overlay — see `!sharedchat` below. A live toggle persists across browser-source reloads and takes precedence over the `_settings.js` default until changed again.
+
 ### Hiding UI Sections
 
 Each of the three optional UI sections — the **timer**, the **command hints strip**, and the **session tray** — can be disabled independently.
@@ -402,6 +409,11 @@ You can also open `_styles.js` directly in a text editor. Default values are lis
 - `!clearold` - Clear tasks older than a set number of days
 
   - example: `!clearold 7`
+
+- `!sharedchat on` / `!sharedchat off` - Toggle whether commands relayed in from other channels via Twitch Shared Chat are processed. Overrides `allowSharedChatCommands` in `_settings.js` and persists across overlay reloads.
+
+  - example: `!sharedchat on`
+  - example: `!sharedchat off`
 
 ## Aliases
 

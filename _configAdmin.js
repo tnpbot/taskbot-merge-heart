@@ -9,6 +9,7 @@ const _adminConfig = {
     clearDone: ["!cleardone", "!clear done"],
     clearUser: ["!clearuser", "clear user"],
     clearOld: ["!clearold"], // New 9/11/2025 - tnp
+    sharedChat: ["!sharedchat"],
   },
   responseTo: {
     EN: {
@@ -23,6 +24,8 @@ const _adminConfig = {
       clearDone: "All done tasks have been cleared",
       clearUser: "All tasks for {message} have been cleared",
       clearOld: "Cleared {message} old tasks",
+      sharedChatOn: "🔗 Shared Chat commands are now allowed",
+      sharedChatOff: "🔗 Shared Chat commands are now ignored",
     },
     ES: {
       timer: "El temporizador se ha restablecido a {message} minutos",
@@ -35,6 +38,8 @@ const _adminConfig = {
       clearList: "Todas las tareas han sido eliminadas",
       clearDone: "Todas las tareas completadas han sido eliminadas",
       clearUser: "Todas las tareas de {message} han sido eliminadas",
+      sharedChatOn: "🔗 Los comandos de Shared Chat ahora están permitidos",
+      sharedChatOff: "🔗 Los comandos de Shared Chat ahora se ignoran",
     },
     FR: {
       timer: "Minuteur réglé à {message} minutes",
@@ -47,6 +52,8 @@ const _adminConfig = {
       clearList: "Toutes les tâches ont été effacées",
       clearDone: "Toutes les tâches terminées ont été effacées",
       clearUser: "Toutes les tâches de {message} ont été effacées",
+      sharedChatOn: "🔗 Les commandes du Shared Chat sont maintenant autorisées",
+      sharedChatOff: "🔗 Les commandes du Shared Chat sont maintenant ignorées",
     },
     JP: {
       timer: "フォーカスタイマーが {message} 分に設定されました",
@@ -59,6 +66,8 @@ const _adminConfig = {
       clearList: "すべてのタスクがクリアされました",
       clearDone: "完了したすべてのタスクがクリアされました",
       clearUser: "{message} のすべてのタスクがクリアされました",
+      sharedChatOn: "🔗 Shared Chat のコマンドが許可されました",
+      sharedChatOff: "🔗 Shared Chat のコマンドは無視されます",
     },
     UA: {
       timer: "Таймер фокусу встановлено на {message} хвилин",
@@ -71,6 +80,8 @@ const _adminConfig = {
       clearList: "Усі завдання видалено",
       clearDone: "Усі виконані завдання видалено",
       clearUser: "Усі завдання {message} видалено",
+      sharedChatOn: "🔗 Команди Shared Chat тепер дозволені",
+      sharedChatOff: "🔗 Команди Shared Chat тепер ігноруються",
     },
     DE: {
       timer: "Fokus-Timer auf {message} Minuten eingestellt",
@@ -83,6 +94,8 @@ const _adminConfig = {
       clearList: "Alle Aufgaben wurden gelöscht",
       clearDone: "Alle erledigten Aufgaben wurden gelöscht",
       clearUser: "Alle Aufgaben von {message} wurden gelöscht",
+      sharedChatOn: "🔗 Shared-Chat-Befehle sind jetzt erlaubt",
+      sharedChatOff: "🔗 Shared-Chat-Befehle werden jetzt ignoriert",
     },
     PT_BR: {
       timer: "Temporizador de foco definido para {message} minutos",
@@ -95,6 +108,8 @@ const _adminConfig = {
       clearList: "Todas as tarefas foram removidas",
       clearDone: "Todas as tarefas concluídas foram removidas",
       clearUser: "Todas as tarefas de {message} foram removidas",
+      sharedChatOn: "🔗 Comandos do Shared Chat agora são permitidos",
+      sharedChatOff: "🔗 Comandos do Shared Chat agora são ignorados",
     }
   },
 };

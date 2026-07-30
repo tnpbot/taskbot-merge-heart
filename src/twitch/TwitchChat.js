@@ -175,6 +175,13 @@ export default class TwitchChat extends EventEmitter {
  * @returns {Object}
  */
 function convertToCommandFormat(message) {
+	// Twitch Shared Chat tags every relayed message with source-room-id (the
+	// channel it originated in). It matches room-id for messages from this
+	// channel, and differs for messages relayed in from another channel.
+	const sourceRoomId = message.tags["source-room-id"];
+	const roomId = message.tags["room-id"];
+	const isSharedChat = !!sourceRoomId && sourceRoomId !== roomId;
+
 	return {
 		user: message.tags["display-name"],
 		command: message.command.botCommand,
@@ -186,6 +193,7 @@ function convertToCommandFormat(message) {
 		extra: {
 			userColor: message.tags.color,
 			messageId: message.tags.id,
+			isSharedChat,
 		},
 	};
 }

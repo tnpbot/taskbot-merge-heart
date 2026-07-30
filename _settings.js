@@ -12,6 +12,7 @@ const _settings = {
   showTimer: true, // true = mods can use !timer command; false = timer disabled
   botResponsePrefix: "🤖💬 ", // default bot message prefix
   testMode: false, // true or false - for testing purposes
+  allowSharedChatCommands: false, // true = process commands relayed in from other channels via Twitch Shared Chat; false (default) = ignore them. Mods can also flip this live with !sharedchat on/off, which persists across reloads and overrides this default.
    // NEW: Customizable message when focus session ends and break starts
    // Message displayed when focus timer ends
   focusSessionEndMessage: "🎉 Focus session complete! If needed, take a break to get some movement in and hydrate! ☕",

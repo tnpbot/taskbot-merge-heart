@@ -45,7 +45,7 @@ window.addEventListener("load", () => {
 		const response = app.chatHandler(user, command, message, flags, extra);
 		if (!response.error && response.message) {
 			client.say(response.message, extra.messageId);
-		} else {
+		} else if (response.message) {
 			// error logs also are added to OBS logs
 			console.error(response.message);
 		}
